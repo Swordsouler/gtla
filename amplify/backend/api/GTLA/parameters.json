@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "GTLA",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authGTLA",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

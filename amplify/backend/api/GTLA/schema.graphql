@@ -1,0 +1,26 @@
+enum S3ProtectionLevel {
+  PRIVATE
+  PROTECTED
+  PUBLIC
+}
+
+type S3Data {
+  key: String!
+  level: S3ProtectionLevel!
+  identityId: String!
+  version: String!
+}
+
+type Review @model @auth(rules: [{allow: public, operations: [read]}, {allow: owner}]) {
+  id: ID!
+  latitude: Float!
+  longitude: String!
+  address: String!
+  website: AWSURL
+  rating: Int
+  images: S3Data
+  review: String
+  visitedDate: AWSTimestamp!
+  type: String
+}
+ 
