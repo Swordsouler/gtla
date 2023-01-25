@@ -6,11 +6,169 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import {
+  Badge,
+  Button,
+  Divider,
+  Flex,
+  Grid,
+  Icon,
+  ScrollView,
+  Text,
+  TextField,
+  useTheme,
+} from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Review } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
+function ArrayField({
+  items = [],
+  onChange,
+  label,
+  inputFieldRef,
+  children,
+  hasError,
+  setFieldValue,
+  currentFieldValue,
+  defaultFieldValue,
+  lengthLimit,
+  getBadgeText,
+}) {
+  const labelElement = <Text>{label}</Text>;
+  const { tokens } = useTheme();
+  const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
+  const [isEditing, setIsEditing] = React.useState();
+  React.useEffect(() => {
+    if (isEditing) {
+      inputFieldRef?.current?.focus();
+    }
+  }, [isEditing]);
+  const removeItem = async (removeIndex) => {
+    const newItems = items.filter((value, index) => index !== removeIndex);
+    await onChange(newItems);
+    setSelectedBadgeIndex(undefined);
+  };
+  const addItem = async () => {
+    if (
+      currentFieldValue !== undefined &&
+      currentFieldValue !== null &&
+      currentFieldValue !== "" &&
+      !hasError
+    ) {
+      const newItems = [...items];
+      if (selectedBadgeIndex !== undefined) {
+        newItems[selectedBadgeIndex] = currentFieldValue;
+        setSelectedBadgeIndex(undefined);
+      } else {
+        newItems.push(currentFieldValue);
+      }
+      await onChange(newItems);
+      setIsEditing(false);
+    }
+  };
+  const arraySection = (
+    <React.Fragment>
+      {!!items?.length && (
+        <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
+          {items.map((value, index) => {
+            return (
+              <Badge
+                key={index}
+                style={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  marginRight: 3,
+                  marginTop: 3,
+                  backgroundColor:
+                    index === selectedBadgeIndex ? "#B8CEF9" : "",
+                }}
+                onClick={() => {
+                  setSelectedBadgeIndex(index);
+                  setFieldValue(items[index]);
+                  setIsEditing(true);
+                }}
+              >
+                {getBadgeText ? getBadgeText(value) : value.toString()}
+                <Icon
+                  style={{
+                    cursor: "pointer",
+                    paddingLeft: 3,
+                    width: 20,
+                    height: 20,
+                  }}
+                  viewBox={{ width: 20, height: 20 }}
+                  paths={[
+                    {
+                      d: "M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z",
+                      stroke: "black",
+                    },
+                  ]}
+                  ariaLabel="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    removeItem(index);
+                  }}
+                />
+              </Badge>
+            );
+          })}
+        </ScrollView>
+      )}
+      <Divider orientation="horizontal" marginTop={5} />
+    </React.Fragment>
+  );
+  if (lengthLimit !== undefined && items.length >= lengthLimit && !isEditing) {
+    return (
+      <React.Fragment>
+        {labelElement}
+        {arraySection}
+      </React.Fragment>
+    );
+  }
+  return (
+    <React.Fragment>
+      {labelElement}
+      {isEditing && children}
+      {!isEditing ? (
+        <>
+          <Button
+            onClick={() => {
+              setIsEditing(true);
+            }}
+          >
+            Add item
+          </Button>
+        </>
+      ) : (
+        <Flex justifyContent="flex-end">
+          {(currentFieldValue || isEditing) && (
+            <Button
+              children="Cancel"
+              type="button"
+              size="small"
+              onClick={() => {
+                setFieldValue(defaultFieldValue);
+                setIsEditing(false);
+                setSelectedBadgeIndex(undefined);
+              }}
+            ></Button>
+          )}
+          <Button
+            size="small"
+            variation="link"
+            color={tokens.colors.brand.primary[80]}
+            isDisabled={hasError}
+            onClick={addItem}
+          >
+            {selectedBadgeIndex !== undefined ? "Save" : "Add"}
+          </Button>
+        </Flex>
+      )}
+      {arraySection}
+    </React.Fragment>
+  );
+}
 export default function ReviewUpdateForm(props) {
   const {
     id: idProp,
@@ -29,20 +187,24 @@ export default function ReviewUpdateForm(props) {
     address: "",
     website: "",
     rating: "",
+    type: "",
     review: "",
     visitedDate: "",
-    type: "",
+    googleImages: [],
   };
   const [latitude, setLatitude] = React.useState(initialValues.latitude);
   const [longitude, setLongitude] = React.useState(initialValues.longitude);
   const [address, setAddress] = React.useState(initialValues.address);
   const [website, setWebsite] = React.useState(initialValues.website);
   const [rating, setRating] = React.useState(initialValues.rating);
+  const [type, setType] = React.useState(initialValues.type);
   const [review, setReview] = React.useState(initialValues.review);
   const [visitedDate, setVisitedDate] = React.useState(
     initialValues.visitedDate
   );
-  const [type, setType] = React.useState(initialValues.type);
+  const [googleImages, setGoogleImages] = React.useState(
+    initialValues.googleImages
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = reviewRecord
@@ -53,9 +215,11 @@ export default function ReviewUpdateForm(props) {
     setAddress(cleanValues.address);
     setWebsite(cleanValues.website);
     setRating(cleanValues.rating);
+    setType(cleanValues.type);
     setReview(cleanValues.review);
     setVisitedDate(cleanValues.visitedDate);
-    setType(cleanValues.type);
+    setGoogleImages(cleanValues.googleImages ?? []);
+    setCurrentGoogleImagesValue("");
     setErrors({});
   };
   const [reviewRecord, setReviewRecord] = React.useState(review);
@@ -67,15 +231,19 @@ export default function ReviewUpdateForm(props) {
     queryData();
   }, [idProp, review]);
   React.useEffect(resetStateValues, [reviewRecord]);
+  const [currentGoogleImagesValue, setCurrentGoogleImagesValue] =
+    React.useState("");
+  const googleImagesRef = React.createRef();
   const validations = {
     latitude: [{ type: "Required" }],
     longitude: [{ type: "Required" }],
     address: [{ type: "Required" }],
     website: [{ type: "URL" }],
     rating: [],
+    type: [],
     review: [],
     visitedDate: [{ type: "Required" }],
-    type: [],
+    googleImages: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -130,9 +298,10 @@ export default function ReviewUpdateForm(props) {
           address,
           website,
           rating,
+          type,
           review,
           visitedDate,
-          type,
+          googleImages,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -197,9 +366,10 @@ export default function ReviewUpdateForm(props) {
               address,
               website,
               rating,
+              type,
               review,
               visitedDate,
-              type,
+              googleImages,
             };
             const result = onChange(modelFields);
             value = result?.latitude ?? value;
@@ -228,9 +398,10 @@ export default function ReviewUpdateForm(props) {
               address,
               website,
               rating,
+              type,
               review,
               visitedDate,
-              type,
+              googleImages,
             };
             const result = onChange(modelFields);
             value = result?.longitude ?? value;
@@ -259,9 +430,10 @@ export default function ReviewUpdateForm(props) {
               address: value,
               website,
               rating,
+              type,
               review,
               visitedDate,
-              type,
+              googleImages,
             };
             const result = onChange(modelFields);
             value = result?.address ?? value;
@@ -290,9 +462,10 @@ export default function ReviewUpdateForm(props) {
               address,
               website: value,
               rating,
+              type,
               review,
               visitedDate,
-              type,
+              googleImages,
             };
             const result = onChange(modelFields);
             value = result?.website ?? value;
@@ -325,9 +498,10 @@ export default function ReviewUpdateForm(props) {
               address,
               website,
               rating: value,
+              type,
               review,
               visitedDate,
-              type,
+              googleImages,
             };
             const result = onChange(modelFields);
             value = result?.rating ?? value;
@@ -343,6 +517,38 @@ export default function ReviewUpdateForm(props) {
         {...getOverrideProps(overrides, "rating")}
       ></TextField>
       <TextField
+        label="Type"
+        isRequired={false}
+        isReadOnly={false}
+        value={type}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              latitude,
+              longitude,
+              address,
+              website,
+              rating,
+              type: value,
+              review,
+              visitedDate,
+              googleImages,
+            };
+            const result = onChange(modelFields);
+            value = result?.type ?? value;
+          }
+          if (errors.type?.hasError) {
+            runValidationTasks("type", value);
+          }
+          setType(value);
+        }}
+        onBlur={() => runValidationTasks("type", type)}
+        errorMessage={errors.type?.errorMessage}
+        hasError={errors.type?.hasError}
+        {...getOverrideProps(overrides, "type")}
+      ></TextField>
+      <TextField
         label="Review"
         isRequired={false}
         isReadOnly={false}
@@ -356,9 +562,10 @@ export default function ReviewUpdateForm(props) {
               address,
               website,
               rating,
+              type,
               review: value,
               visitedDate,
-              type,
+              googleImages,
             };
             const result = onChange(modelFields);
             value = result?.review ?? value;
@@ -391,9 +598,10 @@ export default function ReviewUpdateForm(props) {
               address,
               website,
               rating,
+              type,
               review,
               visitedDate: value,
-              type,
+              googleImages,
             };
             const result = onChange(modelFields);
             value = result?.visitedDate ?? value;
@@ -408,13 +616,9 @@ export default function ReviewUpdateForm(props) {
         hasError={errors.visitedDate?.hasError}
         {...getOverrideProps(overrides, "visitedDate")}
       ></TextField>
-      <TextField
-        label="Type"
-        isRequired={false}
-        isReadOnly={false}
-        value={type}
-        onChange={(e) => {
-          let { value } = e.target;
+      <ArrayField
+        onChange={async (items) => {
+          let values = items;
           if (onChange) {
             const modelFields = {
               latitude,
@@ -422,23 +626,47 @@ export default function ReviewUpdateForm(props) {
               address,
               website,
               rating,
+              type,
               review,
               visitedDate,
-              type: value,
+              googleImages: values,
             };
             const result = onChange(modelFields);
-            value = result?.type ?? value;
+            values = result?.googleImages ?? values;
           }
-          if (errors.type?.hasError) {
-            runValidationTasks("type", value);
-          }
-          setType(value);
+          setGoogleImages(values);
+          setCurrentGoogleImagesValue("");
         }}
-        onBlur={() => runValidationTasks("type", type)}
-        errorMessage={errors.type?.errorMessage}
-        hasError={errors.type?.hasError}
-        {...getOverrideProps(overrides, "type")}
-      ></TextField>
+        currentFieldValue={currentGoogleImagesValue}
+        label={"Google images"}
+        items={googleImages}
+        hasError={errors.googleImages?.hasError}
+        setFieldValue={setCurrentGoogleImagesValue}
+        inputFieldRef={googleImagesRef}
+        defaultFieldValue={""}
+      >
+        <TextField
+          label="Google images"
+          isRequired={false}
+          isReadOnly={false}
+          value={currentGoogleImagesValue}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.googleImages?.hasError) {
+              runValidationTasks("googleImages", value);
+            }
+            setCurrentGoogleImagesValue(value);
+          }}
+          onBlur={() =>
+            runValidationTasks("googleImages", currentGoogleImagesValue)
+          }
+          errorMessage={errors.googleImages?.errorMessage}
+          hasError={errors.googleImages?.hasError}
+          ref={googleImagesRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "googleImages")}
+        ></TextField>
+      </ArrayField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

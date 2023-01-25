@@ -37,10 +37,11 @@ type EagerReview = {
   readonly address: string;
   readonly website?: string | null;
   readonly rating?: number | null;
-  readonly images?: S3Data | null;
+  readonly type?: string | null;
   readonly review?: string | null;
   readonly visitedDate: number;
-  readonly type?: string | null;
+  readonly images?: S3Data | null;
+  readonly googleImages?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -56,10 +57,11 @@ type LazyReview = {
   readonly address: string;
   readonly website?: string | null;
   readonly rating?: number | null;
-  readonly images?: S3Data | null;
+  readonly type?: string | null;
   readonly review?: string | null;
   readonly visitedDate: number;
-  readonly type?: string | null;
+  readonly images?: S3Data | null;
+  readonly googleImages?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

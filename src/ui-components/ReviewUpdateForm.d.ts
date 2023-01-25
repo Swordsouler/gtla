@@ -19,9 +19,10 @@ export declare type ReviewUpdateFormInputValues = {
     address?: string;
     website?: string;
     rating?: number;
+    type?: string;
     review?: string;
     visitedDate?: number;
-    type?: string;
+    googleImages?: string[];
 };
 export declare type ReviewUpdateFormValidationValues = {
     latitude?: ValidationFunction<number>;
@@ -29,9 +30,10 @@ export declare type ReviewUpdateFormValidationValues = {
     address?: ValidationFunction<string>;
     website?: ValidationFunction<string>;
     rating?: ValidationFunction<number>;
+    type?: ValidationFunction<string>;
     review?: ValidationFunction<string>;
     visitedDate?: ValidationFunction<number>;
-    type?: ValidationFunction<string>;
+    googleImages?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type ReviewUpdateFormOverridesProps = {
@@ -41,9 +43,10 @@ export declare type ReviewUpdateFormOverridesProps = {
     address?: PrimitiveOverrideProps<TextFieldProps>;
     website?: PrimitiveOverrideProps<TextFieldProps>;
     rating?: PrimitiveOverrideProps<TextFieldProps>;
+    type?: PrimitiveOverrideProps<TextFieldProps>;
     review?: PrimitiveOverrideProps<TextFieldProps>;
     visitedDate?: PrimitiveOverrideProps<TextFieldProps>;
-    type?: PrimitiveOverrideProps<TextFieldProps>;
+    googleImages?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type ReviewUpdateFormProps = React.PropsWithChildren<{
     overrides?: ReviewUpdateFormOverridesProps | undefined | null;

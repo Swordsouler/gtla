@@ -18,9 +18,10 @@ type Review @model @auth(rules: [{allow: public, operations: [read]}, {allow: ow
   address: String!
   website: AWSURL
   rating: Int
-  images: S3Data
+  type: String
   review: String
   visitedDate: AWSTimestamp!
-  type: String
+  images: S3Data
+  googleImages: [String]
 }
  

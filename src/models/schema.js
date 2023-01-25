@@ -45,12 +45,10 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "images": {
-                    "name": "images",
+                "type": {
+                    "name": "type",
                     "isArray": false,
-                    "type": {
-                        "nonModel": "S3Data"
-                    },
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -68,12 +66,22 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "type": {
-                    "name": "type",
+                "images": {
+                    "name": "images",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "nonModel": "S3Data"
+                    },
                     "isRequired": false,
                     "attributes": []
+                },
+                "googleImages": {
+                    "name": "googleImages",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -175,5 +183,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.5",
-    "version": "b6243bcbb076fd70bb807794f5ca0a9d"
+    "version": "db50d41b7950e5981dea47bbafb54fa8"
 };

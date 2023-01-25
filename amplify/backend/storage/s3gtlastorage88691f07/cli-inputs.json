@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3gtlastorage88691f07",
+  "bucketName": "gtla-storage-88691f07",
+  "policyUUID": "94d15d2d",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}
