@@ -19,6 +19,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--color-background);
+    -webkit-tap-highlight-color: transparent;
 }
 
 a, h1, h2, h3, h4, h5, h6, span, p {
