@@ -24,7 +24,7 @@
 }
 
 #review__location-name {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 500;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -60,4 +60,8 @@
     color: var(--color-primary);
     font-weight: bold;
     padding: 0 !important;
+}
+
+#review__content__sentence {
+    margin-bottom: 10px;
 }

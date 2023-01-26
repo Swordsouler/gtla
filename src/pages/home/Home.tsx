@@ -1,15 +1,15 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 import Review from "../../ui-kit/Review/Review";
 import "./Home.scss";
 
 export default function Home() {
+    const reviews = useSelector((state: RootState) => state.Inspector.reviews);
     return (
         <div id="home">
             <h1>GTLAccueil</h1>
-            <Review id={""} latitude={0} longitude={0} address={"14 Rue Chabanais, 75002 Paris"} website={"https://www.hokkaido.kintarogroup.com/"} type={"Restaurant asiatique"} visitedDate={1674689741} locationName={"Hokkaido"}/>
-            <Review id={""} latitude={0} longitude={0} address={""} visitedDate={1674689741} locationName={"Hokkaido"}/>
-            <Review id={""} latitude={0} longitude={0} address={""} visitedDate={1674689741} locationName={"Hokkaido"}/>
-            <Review id={""} latitude={0} longitude={0} address={""} visitedDate={1674689741} locationName={"Hokkaido"}/>
+            {reviews.map((review) => <Review key={review.id} {...review} />)}
         </div>
     );
 }

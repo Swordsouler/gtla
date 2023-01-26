@@ -9,7 +9,6 @@ export type NavigationButtonProps = {
 }
 
 export default React.memo(({ buttons }: { buttons: NavigationButtonProps[] }) => {
-    console.log(buttons);
     const { pathname } = useLocation();
     const currentPage = buttons.findIndex(b => b.link === pathname) + 1;
     return (
