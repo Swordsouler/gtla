@@ -14,8 +14,9 @@ export declare type ValidationResponse = {
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type ReviewCreateFormInputValues = {
     latitude?: number;
-    longitude?: string;
+    longitude?: number;
     address?: string;
+    locationName?: string;
     website?: string;
     rating?: number;
     type?: string;
@@ -25,8 +26,9 @@ export declare type ReviewCreateFormInputValues = {
 };
 export declare type ReviewCreateFormValidationValues = {
     latitude?: ValidationFunction<number>;
-    longitude?: ValidationFunction<string>;
+    longitude?: ValidationFunction<number>;
     address?: ValidationFunction<string>;
+    locationName?: ValidationFunction<string>;
     website?: ValidationFunction<string>;
     rating?: ValidationFunction<number>;
     type?: ValidationFunction<string>;
@@ -40,6 +42,7 @@ export declare type ReviewCreateFormOverridesProps = {
     latitude?: PrimitiveOverrideProps<TextFieldProps>;
     longitude?: PrimitiveOverrideProps<TextFieldProps>;
     address?: PrimitiveOverrideProps<TextFieldProps>;
+    locationName?: PrimitiveOverrideProps<TextFieldProps>;
     website?: PrimitiveOverrideProps<TextFieldProps>;
     rating?: PrimitiveOverrideProps<TextFieldProps>;
     type?: PrimitiveOverrideProps<TextFieldProps>;

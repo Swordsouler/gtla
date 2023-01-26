@@ -1,0 +1,83 @@
+:root {
+    --navigation-button-width: 140px;
+}
+
+
+#navigation-buttons:hover #selected {
+    color: var(--color-primary);
+    transform: scale(1);
+}
+
+#navigation-buttons {
+    a:hover, a#selected, a#selected:hover {
+        color: var(--color-primary);
+        transform: scale(1.1);
+    }
+    a {
+        line-height: 45px;
+        width: var(--navigation-button-width);
+        font-size: 20px;
+        display: inline-block;
+        position: relative;
+        z-index: 1;
+        text-decoration: none;
+        text-transform: none;
+        text-align: center;
+        cursor: pointer;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-top: 5px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-weight: bold;
+        transition: all 0.3s ease 0s;
+        color: var(--color-text);
+        span {
+            display: block;
+            color: inherit;
+        }
+        div {
+            display: none;
+        }
+    }
+}
+
+
+.navigation-buttons__animation {
+    position: relative;
+    height: 5px;
+    width: var(--navigation-button-width);
+    bottom: 2.5px;
+    z-index: 0;
+    transition: all 0.3s ease 0s;
+    background: linear-gradient(to bottom right, #9ad45b, #524291);
+    border-radius: 5px;
+}
+
+.navigation-buttons__start-0 {
+    left: calc(50% - var(--navigation-button-width) / 2);
+    opacity: 0;
+}
+
+.navigation-buttons__start-1, 
+:nth-child(1):hover~.navigation-buttons__animation {
+    left: calc(var(--navigation-button-width) * 0 + 10px * 1);
+    opacity: 1;
+}
+
+.navigation-buttons__start-2, 
+:nth-child(2):hover~.navigation-buttons__animation {
+    left: calc(var(--navigation-button-width) * 1 + 10px * 3);
+    opacity: 1;
+}
+
+.navigation-buttons__start-3, 
+:nth-child(3):hover~.navigation-buttons__animation {
+    left: calc(var(--navigation-button-width) * 2 + 10px * 5);
+    opacity: 1;
+}
+
+.navigation-buttons__start-4, 
+:nth-child(4):hover~.navigation-buttons__animation {
+    left: calc(var(--navigation-button-width) * 3 + 10px * 7);
+}

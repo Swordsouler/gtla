@@ -33,8 +33,9 @@ type EagerReview = {
   };
   readonly id: string;
   readonly latitude: number;
-  readonly longitude: string;
+  readonly longitude: number;
   readonly address: string;
+  readonly locationName: string;
   readonly website?: string | null;
   readonly rating?: number | null;
   readonly type?: string | null;
@@ -53,8 +54,9 @@ type LazyReview = {
   };
   readonly id: string;
   readonly latitude: number;
-  readonly longitude: string;
+  readonly longitude: number;
   readonly address: string;
+  readonly locationName: string;
   readonly website?: string | null;
   readonly rating?: number | null;
   readonly type?: string | null;

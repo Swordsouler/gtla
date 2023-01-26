@@ -14,6 +14,9 @@
     "categories": {
       "auth": {
         "GTLA": {}
+      },
+      "storage": {
+        "s3gtlastorage88691f07": {}
       }
     }
   }

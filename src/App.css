@@ -1,0 +1,12 @@
+#app {
+
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 1);
+    background-color: var(--color-background);
+}

@@ -20,12 +20,19 @@ export const schema = {
                 "longitude": {
                     "name": "longitude",
                     "isArray": false,
-                    "type": "String",
+                    "type": "Float",
                     "isRequired": true,
                     "attributes": []
                 },
                 "address": {
                     "name": "address",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "locationName": {
+                    "name": "locationName",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -183,5 +190,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.5",
-    "version": "db50d41b7950e5981dea47bbafb54fa8"
+    "version": "78a992a28cf01acf769b4f8530ece21c"
 };

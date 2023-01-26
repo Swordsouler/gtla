@@ -185,6 +185,7 @@ export default function ReviewUpdateForm(props) {
     latitude: "",
     longitude: "",
     address: "",
+    locationName: "",
     website: "",
     rating: "",
     type: "",
@@ -195,6 +196,9 @@ export default function ReviewUpdateForm(props) {
   const [latitude, setLatitude] = React.useState(initialValues.latitude);
   const [longitude, setLongitude] = React.useState(initialValues.longitude);
   const [address, setAddress] = React.useState(initialValues.address);
+  const [locationName, setLocationName] = React.useState(
+    initialValues.locationName
+  );
   const [website, setWebsite] = React.useState(initialValues.website);
   const [rating, setRating] = React.useState(initialValues.rating);
   const [type, setType] = React.useState(initialValues.type);
@@ -213,6 +217,7 @@ export default function ReviewUpdateForm(props) {
     setLatitude(cleanValues.latitude);
     setLongitude(cleanValues.longitude);
     setAddress(cleanValues.address);
+    setLocationName(cleanValues.locationName);
     setWebsite(cleanValues.website);
     setRating(cleanValues.rating);
     setType(cleanValues.type);
@@ -238,6 +243,7 @@ export default function ReviewUpdateForm(props) {
     latitude: [{ type: "Required" }],
     longitude: [{ type: "Required" }],
     address: [{ type: "Required" }],
+    locationName: [{ type: "Required" }],
     website: [{ type: "URL" }],
     rating: [],
     type: [],
@@ -296,6 +302,7 @@ export default function ReviewUpdateForm(props) {
           latitude,
           longitude,
           address,
+          locationName,
           website,
           rating,
           type,
@@ -364,6 +371,7 @@ export default function ReviewUpdateForm(props) {
               latitude: value,
               longitude,
               address,
+              locationName,
               website,
               rating,
               type,
@@ -388,14 +396,19 @@ export default function ReviewUpdateForm(props) {
         label="Longitude"
         isRequired={true}
         isReadOnly={false}
+        type="number"
+        step="any"
         value={longitude}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
           if (onChange) {
             const modelFields = {
               latitude,
               longitude: value,
               address,
+              locationName,
               website,
               rating,
               type,
@@ -428,6 +441,7 @@ export default function ReviewUpdateForm(props) {
               latitude,
               longitude,
               address: value,
+              locationName,
               website,
               rating,
               type,
@@ -449,6 +463,39 @@ export default function ReviewUpdateForm(props) {
         {...getOverrideProps(overrides, "address")}
       ></TextField>
       <TextField
+        label="Location name"
+        isRequired={true}
+        isReadOnly={false}
+        value={locationName}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              latitude,
+              longitude,
+              address,
+              locationName: value,
+              website,
+              rating,
+              type,
+              review,
+              visitedDate,
+              googleImages,
+            };
+            const result = onChange(modelFields);
+            value = result?.locationName ?? value;
+          }
+          if (errors.locationName?.hasError) {
+            runValidationTasks("locationName", value);
+          }
+          setLocationName(value);
+        }}
+        onBlur={() => runValidationTasks("locationName", locationName)}
+        errorMessage={errors.locationName?.errorMessage}
+        hasError={errors.locationName?.hasError}
+        {...getOverrideProps(overrides, "locationName")}
+      ></TextField>
+      <TextField
         label="Website"
         isRequired={false}
         isReadOnly={false}
@@ -460,6 +507,7 @@ export default function ReviewUpdateForm(props) {
               latitude,
               longitude,
               address,
+              locationName,
               website: value,
               rating,
               type,
@@ -496,6 +544,7 @@ export default function ReviewUpdateForm(props) {
               latitude,
               longitude,
               address,
+              locationName,
               website,
               rating: value,
               type,
@@ -528,6 +577,7 @@ export default function ReviewUpdateForm(props) {
               latitude,
               longitude,
               address,
+              locationName,
               website,
               rating,
               type: value,
@@ -560,6 +610,7 @@ export default function ReviewUpdateForm(props) {
               latitude,
               longitude,
               address,
+              locationName,
               website,
               rating,
               type,
@@ -596,6 +647,7 @@ export default function ReviewUpdateForm(props) {
               latitude,
               longitude,
               address,
+              locationName,
               website,
               rating,
               type,
@@ -624,6 +676,7 @@ export default function ReviewUpdateForm(props) {
               latitude,
               longitude,
               address,
+              locationName,
               website,
               rating,
               type,
