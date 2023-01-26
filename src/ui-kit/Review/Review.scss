@@ -17,6 +17,7 @@
     border-radius: 10px;
     transition: all 0.3s;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
 #review__header:hover {
@@ -37,6 +38,7 @@
     gap: 3px;
     overflow: hidden;
     transition: all 0.5s;
+    gap: 10px;
 }
 
 #review__content__visible {
@@ -63,5 +65,5 @@
 }
 
 #review__content__sentence {
-    margin-bottom: 10px;
+    
 }
