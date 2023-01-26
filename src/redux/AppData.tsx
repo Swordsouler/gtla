@@ -7,8 +7,9 @@ type AppData = {
 }
 
 const initialState: AppData = {
-	theme: localStorage.getItem("theme") || (window.matchMedia('prefers-color-scheme: dark').matches ? "dark" : "light"),
+	theme: localStorage.getItem("theme") || (window.matchMedia && window.matchMedia('prefers-color-scheme: dark').matches ? "dark" : "light"),
 };
+console.log((window.matchMedia && window.matchMedia('prefers-color-scheme: dark').matches));
 
 export const AppDataSlice = createSlice({
 	name: "AppData",
