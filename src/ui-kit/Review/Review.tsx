@@ -32,6 +32,7 @@ export default React.memo((props: ReviewProps) => {
     const onClick = () => {
         dispatch(onClickReview(props.id));
     };
+    const theme = useSelector((state: RootState) => state.AppData.theme);
     
     return (
         <div id="review" className="no-select">
@@ -39,7 +40,7 @@ export default React.memo((props: ReviewProps) => {
                 <Rating
                     readonly
                     initialValue={3}
-                    fillColor={getComputedStyle(document.documentElement).getPropertyValue("--color-primary")}
+                    fillColor={theme === "light" ? "#524291" : "#9ad45b"}
                     emptyColor="#888888"
                     style={{height: "23px"}}
                     size={20}/>

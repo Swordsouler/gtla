@@ -1,14 +1,14 @@
 :root {
-    --color-primary: #9ad45b;
-    --color-secondary: #524291;
-    --color-background: #161616;
-    --color-text: #FFFFFF;
-}
-[data-theme='dark'] {
     --color-primary: #524291;
     --color-secondary: #9ad45b;
     --color-background: #FFFFFF;
     --color-text: #000000;
+}
+[data-theme='dark'] {
+    --color-primary: #9ad45b;
+    --color-secondary: #524291;
+    --color-background: #161616;
+    --color-text: #FFFFFF;
 }
 
 body {
