@@ -8,9 +8,10 @@ const S3ProtectionLevel = {
   "PUBLIC": "PUBLIC"
 };
 
-const { Review, S3Data } = initSchema(schema);
+const { User, Review, S3Data } = initSchema(schema);
 
 export {
+  User,
   Review,
   S3ProtectionLevel,
   S3Data

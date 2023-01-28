@@ -1,14 +1,18 @@
 :root {
     --color-primary: #524291;
     --color-secondary: #9ad45b;
-    --color-background: #FFFFFF;
+    --color-background: #E1EDFF;
+    --color-background-hard: #FFFFFF;
     --color-text: #000000;
+    --color-text-on-background: #FFFFFF;
 }
 [data-theme='dark'] {
     --color-primary: #9ad45b;
     --color-secondary: #524291;
-    --color-background: #161616;
+    --color-background: #202020;
+    --color-background-hard: #000000;
     --color-text: #FFFFFF;
+    --color-text-on-background: #000000;
 }
 
 body {
@@ -34,4 +38,14 @@ a, h1, h2, h3, h4, h5, h6, span, p {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.fill-space {
+    flex: 1;
+}
+
+.clickable-icon {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
 }

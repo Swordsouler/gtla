@@ -2,7 +2,7 @@ import { DataStore, Hub } from 'aws-amplify';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Add from './pages/add/Add';
 import Home from './pages/home/Home';
@@ -10,10 +10,14 @@ import { toggleTheme } from './redux/AppData';
 import { loadReviews } from './redux/Inspector';
 import { RootState } from './redux/store';
 import NavigationButtons, { NavigationButtonProps } from './ui-kit/NavigationButtons/NavigationButtons';
+import { HiMoon } from 'react-icons/hi';
+import List from './pages/list/List';
+import Map from './pages/map/Map';
 
 const header: NavigationButtonProps[] = [
-    {name: "GTLAccueil", link: "/"},
-    {name: "GTLAjouter", link: "/add"},
+    {name: "Liste", link: "/list"},
+    {name: "Carte", link: "/map"},
+    {name: "Ajout", link: "/add"},
 ];
 
 function App() {
@@ -36,12 +40,17 @@ function App() {
 
     return (
         <div id="app" data-theme={theme}>
-            <header>
-                <NavigationButtons buttons={header}/>
+            <header className='no-select'>
+                <Link to="/" className={"clickable-icon"} id={"header__home-icon"}><img src={require("../src/assets/icons/logo-gtla.png")} className={"clickable-icon"} /></Link>
+                <div className='fill-space'/>
+                <NavigationButtons buttons={header} />
+                <div className='fill-space'/>
+                <HiMoon size={30} color={theme === "dark" ? "#FFFFFF" : "#000000"} className={"clickable-icon"} onClick={() => {dispatch(toggleTheme())}} id={"header__theme-icon"} />
             </header>
-            <button onClick={() => {dispatch(toggleTheme())}}>change them</button>
             <Routes>
                 <Route path="/" element={<Home/>} />
+                <Route path="/list" element={<List/>} />
+                <Route path="/map" element={<Map/>} />
                 <Route path="/add" element={<Add/>} />
             </Routes>
         </div>

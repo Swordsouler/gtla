@@ -1,13 +1,12 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import Review from "../../ui-kit/Review/Review";
-import "./Add.scss";
+import "./List.scss";
 
-export default function Add() {
+export default function List() {
     const reviews = useSelector((state: RootState) => state.Inspector.reviews);
     return (
-        <div id="add">
+        <div id="list">
             {reviews.map((review) => <Review key={review.id} {...review} />)}
         </div>
     );
