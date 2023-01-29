@@ -7,7 +7,7 @@ export default function Map() {
     const reviews = useSelector((state: RootState) => state.Inspector.reviews);
     return (
         <div id="map">
-            {reviews.map((review) => <Review key={review.id} {...review} />)}
+            
         </div>
     );
 }

@@ -14,4 +14,9 @@ header {
 
 #header__theme-icon, #header__home-icon {
     margin: 0 10px;
+    transition: all 0.2s ease-in-out;
+}
+
+#header__theme-icon:hover, #header__home-icon:hover {
+    transform: scale(1.2);
 }

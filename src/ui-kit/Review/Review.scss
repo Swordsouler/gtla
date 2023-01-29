@@ -3,6 +3,7 @@
     flex-direction: column;
     border-radius: 10px;
     background-color: var(--color-background-hard);
+    box-shadow: 0 0 3px 0 var(--color-primary);
     filter: brightness(100%);
     span {
         color: var(--color-text);

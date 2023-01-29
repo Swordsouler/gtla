@@ -42,6 +42,6 @@ const AddReview: JSX.Element[] = [
     <span key={0}>Pour ajouter un avis, il suffit de cliquer sur le bouton "</span>,
     <span key={1} className='review__content__bold'>Ajout</span>,
     <span key={2}>" dans le menu en haut de l'écran.</span>,
-    <br />,
-    <span key={3}>Une fois sur la page d'ajout, il suffit de suivre les instructions qui s'affichent.</span>
+    <br key={3}/>,
+    <span key={4}>Une fois sur la page d'ajout, il suffit de suivre les instructions qui s'affichent.</span>
 ];

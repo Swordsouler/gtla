@@ -1,6 +1,185 @@
 #add {
     display: flex;
     flex-direction: column;
-    margin: 20px 10px;
+    min-height: calc(100vh - 50px);
     gap: 10px;
+    padding: 0 10px;
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+
+.add__form__content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#map {
+    background-color: red;
+    width: 100vw;
+}
+
+.input__container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    label {
+        padding: 0 5px;
+        font-size: 16px;
+        font-weight: 500;
+        align-items: flex-start;
+    }
+    textarea {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        min-height: 100px;
+    }
+    input[type="text"], textarea {
+        height: 35px;
+        background-color: #E1EDFF;
+        border: 1px solid var(--color-primary);
+        box-shadow: 0 0 5px 0 var(--color-primary);
+        border-radius: 10px;
+        padding: 0px 10px;
+        font-size: 16px;
+        resize: vertical;
+    }
+    input[type="text"]:focus, textarea:focus {
+        outline: none;
+    }
+
+    input[type="text"]::placeholder, textarea::placeholder {
+        color: #aaa;
+        font-size: 16px;
+        font-style: italic;
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+    .input__photo__container {
+        display: flex;
+        border-radius: 10px;
+        border: 3px dashed var(--color-primary);
+        height: 100px;
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        
+        display: flex;
+        direction: row;
+        padding: 10px;
+        padding-left: 13px;
+        padding-right: 0px;
+        span {
+            align-self: center;
+            width: 100%;
+            text-align: center;
+            color: var(--color-primary);
+            font-size: 18px;
+        }
+        img {
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+        // hide scrollbar
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}
+
+.add__buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+    input[type="submit"]:disabled, input[type="button"]:disabled, input[type="submit"]:disabled:hover, input[type="button"]:disabled:hover {
+        background-color: #888;
+        color: #fff;
+        cursor: not-allowed;
+        border: 1px solid #888;
+        box-shadow: 0 0 5px 0 #888;
+    }
+
+    input[type="submit"], input[type="button"] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 35px;
+        width: 150px;
+        border: 1px solid var(--color-primary);
+        box-shadow: 0 0 5px 0 var(--color-primary);
+        border-radius: 10px;
+        cursor: pointer;
+        background-color: #E1EDFF;
+        color: #000;
+        font-size: 18px;
+        font-weight: bold;
+        transition: all 0.2s ease-in-out;
+    }
+
+    input[type="submit"]:hover, input[type="button"]:hover {
+        background-color: var(--color-primary);
+        color: var(--color-text-on-primary);
+    }
+}
+
+#add__submit {
+}
+
+#add__page-ui {
+    display: flex;
+    flex-direction: row;
+    margin-top: 40px;
+    width: 100%;
+    align-self: center;
+}
+
+#add__page-ui__number {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    span {
+        border-radius: 50px;
+        background-color: var(--color-primary);
+        color: var(--color-text-on-primary);
+        width: 25px;
+        height: 25px;
+        outline: 1px solid var(--color-primary);
+    }
+}
+
+#add__page-ui__number::after, #add__page-ui__number::before {
+    display: block;
+    content: "";
+    background-color: var(--color-primary);
+    border-top: 1px solid var(--color-primary);
+    border-bottom: 1px solid var(--color-primary);
+    flex: 1;
+    height: 5px;
+    z-index: -1;
+}
+
+#add__page-ui__number:not(:last-child)::after, #add__page-ui__number:not(:first-child)::before {
+    z-index: 1;
+}
+
+.add__page-ui__number__disabled {
+    span {
+        background-color: var(--color-background-hard) !important;
+        color: var(--color-text) !important;
+    }
+}
+.add__page-ui__number__disabled:not(:last-child)::after, .add__page-ui__number__disabled:not(:first-child)::before {
+    background-color: var(--color-background-hard) !important;
 }

@@ -4,7 +4,7 @@
     --color-background: #E1EDFF;
     --color-background-hard: #FFFFFF;
     --color-text: #000000;
-    --color-text-on-background: #FFFFFF;
+    --color-text-on-primary: #FFFFFF;
 }
 [data-theme='dark'] {
     --color-primary: #9ad45b;
@@ -12,7 +12,7 @@
     --color-background: #202020;
     --color-background-hard: #000000;
     --color-text: #FFFFFF;
-    --color-text-on-background: #000000;
+    --color-text-on-primary: #000000;
 }
 
 body {
@@ -26,7 +26,7 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
-a, h1, h2, h3, h4, h5, h6, span, p {
+a, h1, h2, h3, h4, h5, h6, span, p, label {
     color: var(--color-text);
     text-align: center;
 }
