@@ -74,7 +74,7 @@ const pages: Page[] = [{
 export default function Add() {
     
     const theme = useSelector((state: RootState) => state.AppData.theme);
-    const [currentPage, setCurrentPage] = React.useState<number>(2);
+    const [currentPage, setCurrentPage] = React.useState<number>(0);
 
     const onBack = () => {
         if(currentPage > 0)
@@ -104,7 +104,7 @@ export default function Add() {
 
 const PageUI = ({currentPage}: {currentPage: number}) => {
     return (
-        <div id="add__page-ui">
+        <div id="add__page-ui" className="no-select">
             {pages.map((page, index) => {
                 if (index > currentPage) {
                     return <div key={index} id="add__page-ui__number" className="add__page-ui__number__disabled"><span>{index+1}</span></div>

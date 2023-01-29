@@ -10,10 +10,10 @@ import './Review.scss';
 
 export type ReviewProps = {
     id: string,
-    latitude: number;
-    longitude: number;
-    address: string;
     locationName: string;
+    latitude?: number;
+    longitude?: number;
+    address: string;
     website?: string | null;
     rating?: number | null;
     type?: string | null;

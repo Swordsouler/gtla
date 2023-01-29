@@ -76,10 +76,10 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "latitude": {
-                    "name": "latitude",
+                "locationName": {
+                    "name": "locationName",
                     "isArray": false,
-                    "type": "Float",
+                    "type": "String",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -87,21 +87,21 @@ export const schema = {
                     "name": "longitude",
                     "isArray": false,
                     "type": "Float",
-                    "isRequired": true,
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "latitude": {
+                    "name": "latitude",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "address": {
                     "name": "address",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "locationName": {
-                    "name": "locationName",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "website": {
@@ -111,17 +111,17 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "rating": {
-                    "name": "rating",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "type": {
                     "name": "type",
                     "isArray": false,
                     "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "rating": {
+                    "name": "rating",
+                    "isArray": false,
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -262,5 +262,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.5",
-    "version": "2b57cf63b568bd940d644d3c43454f69"
+    "version": "86fbd4115172d90b6f617596b04f0c7a"
 };

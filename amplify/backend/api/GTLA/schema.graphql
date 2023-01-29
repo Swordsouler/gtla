@@ -18,13 +18,13 @@ type S3Data {
 
 type Review @model @auth(rules: [{allow: public, operations: [create, read, delete]}]) {
   id: ID!
-  latitude: Float!
-  longitude: Float!
-  address: String!
   locationName: String!
+  longitude: Float
+  latitude: Float
+  address: String
   website: AWSURL
-  rating: Int
   type: String
+  rating: Int
   review: String
   visitedDate: AWSTimestamp!
   images: S3Data
