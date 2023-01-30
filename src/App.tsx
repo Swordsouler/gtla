@@ -13,8 +13,6 @@ import NavigationButtons, { NavigationButtonProps } from './ui-kit/NavigationBut
 import { HiMoon } from 'react-icons/hi';
 import List from './pages/list/List';
 import Map from './pages/map/Map';
-import { User } from './models';
-import { Dispatch } from 'redux';
 
 const header: NavigationButtonProps[] = [
     {name: "Liste", link: "/list"},
