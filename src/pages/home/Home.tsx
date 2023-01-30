@@ -5,7 +5,7 @@ import { ReviewBlock } from "../../ui-kit/Review/Review";
 import "./Home.scss";
 
 export default function Home() {
-    const reviews = useSelector((state: RootState) => state.Inspector.reviews);
+    const reviews = useSelector((state: RootState) => state.ReviewManager.reviews);
     return (
         <div id="home">
             <h1>Bienvenue sur GTLA</h1>

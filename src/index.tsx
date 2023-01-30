@@ -8,6 +8,7 @@ import 'moment/locale/fr'
 import moment from 'moment';
 import { Amplify, AuthModeStrategyType } from 'aws-amplify';
 import awsExports from './aws-exports';
+import "react-activity/dist/library.css";
 moment.locale('fr');
 
 Amplify.configure({
@@ -22,8 +23,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
 	<Provider store={store}>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
 	</Provider>
 );

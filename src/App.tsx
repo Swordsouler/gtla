@@ -7,12 +7,14 @@ import './App.css';
 import Add from './pages/add/Add';
 import Home from './pages/home/Home';
 import { toggleTheme } from './redux/AppData';
-import { loadReviews } from './redux/Inspector';
+import { loadReviews, loadDeviceId } from './redux/ReviewManager';
 import { RootState } from './redux/store';
 import NavigationButtons, { NavigationButtonProps } from './ui-kit/NavigationButtons/NavigationButtons';
 import { HiMoon } from 'react-icons/hi';
 import List from './pages/list/List';
 import Map from './pages/map/Map';
+import { User } from './models';
+import { Dispatch } from 'redux';
 
 const header: NavigationButtonProps[] = [
     {name: "Liste", link: "/list"},
@@ -24,11 +26,15 @@ function App() {
 	
     const dispatch = useDispatch();
     const theme = useSelector((state: RootState) => state.AppData.theme);
+    const deviceId = useSelector((state: RootState) => state.ReviewManager.deviceId);
 
 	React.useEffect(() => {
+        
 		const removeListener = Hub.listen('datastore', async ({ payload }) => {
+            console.log(payload);
 			if (payload.event === 'ready') {
 				console.log('DataStore ready');
+                loadDeviceId(dispatch);
 			}
 		});
 	
@@ -36,8 +42,12 @@ function App() {
 		DataStore.start();
 		return () => removeListener();
 	}, []);
-    dispatch(loadReviews());
 
+    React.useEffect(() => {
+        loadReviews(dispatch, deviceId);
+    }, [deviceId]);
+
+    console.log("deviceId : " + deviceId);
     return (
         <div id="app" data-theme={theme}>
             <header className='no-select'>

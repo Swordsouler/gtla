@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { Rating } from 'react-simple-star-rating';
 import { S3Data } from '../../models';
-import { onClickReview } from '../../redux/Inspector';
+import { onClickReview } from '../../redux/ReviewManager';
 import { RootState } from '../../redux/store';
 import './Review.scss';
 
@@ -13,21 +13,21 @@ export type ReviewProps = {
     locationName: string;
     latitude?: number;
     longitude?: number;
-    address: string;
-    website?: string | null;
-    rating?: number | null;
-    type?: string | null;
-    review?: string | null;
+    address?: string;
+    website?: string;
+    rating?: number;
+    type?: string;
+    review?: string;
     visitedDate: number;
-    images?: S3Data | null;
-    googleImages?: (string | null)[] | null;
-    createdAt?: string | null;
-    updatedAt?: string | null;
+    images?: S3Data;
+    googleImages?: string[];
+    createdAt?: string;
+    updatedAt?: string;
 };
 
 export default React.memo((props: ReviewProps) => {
     const dispatch = useDispatch();
-    const currentReview = useSelector((state: RootState) => state.Inspector.currentReview);
+    const currentReview = useSelector((state: RootState) => state.ReviewManager.currentReview);
     const isShown = currentReview?.id === props.id;
     const onClick = () => {
         dispatch(onClickReview(props.id));

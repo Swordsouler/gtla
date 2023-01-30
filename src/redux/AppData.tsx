@@ -1,15 +1,16 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 type Theme = "light" | "dark";
 
 type AppData = {
-	theme: string;
+	theme: Theme;
 }
 
 const initialState: AppData = {
-	theme: localStorage.getItem("theme") || (window.matchMedia && window.matchMedia('prefers-color-scheme: dark').matches ? "dark" : "light"),
+	theme: localStorage.getItem("theme") ? 
+				(localStorage.getItem("theme") === "dark" ? "dark" : "light") : 
+				(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light")
 };
-console.log((window.matchMedia && window.matchMedia('prefers-color-scheme: dark').matches));
 
 export const AppDataSlice = createSlice({
 	name: "AppData",

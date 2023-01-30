@@ -4,7 +4,7 @@ import Review from "../../ui-kit/Review/Review";
 import "./Map.scss";
 
 export default function Map() {
-    const reviews = useSelector((state: RootState) => state.Inspector.reviews);
+    const reviews = useSelector((state: RootState) => state.ReviewManager.reviews);
     return (
         <div id="map">
             
