@@ -27,9 +27,9 @@ export const ReviewManagerSlice = createSlice({
 			localStorage.setItem("deviceId", action.payload);
 		},
 		setReviews: (state, action: PayloadAction<string>) => {
-			state.isLoaded = true;
 			if(state.deviceId === "") return;
 			state.reviews = JSON.parse(action.payload);
+			state.isLoaded = true;
 		},
 		onClickReview: (state, action: PayloadAction<string>) => {
 			if (state.reviews.length === 0) return;
