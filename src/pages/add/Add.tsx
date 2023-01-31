@@ -1,79 +1,42 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Rating } from "react-simple-star-rating";
 import { RootState } from "../../redux/store";
+import { ReviewProps } from "../../ui-kit/Review/Review";
 import "./Add.scss";
+import { InformationsTitle, InformationsForm, InformationsOnSubmit } from "./Form/Informations";
+import { LocationForm, LocationOnSubmit, LocationTitle } from "./Form/Location";
+import { PicturesForm, PicturesOnSubmit, PicturesTitle } from "./Form/Pictures";
+import { ReviewForm, ReviewOnSubmit, ReviewTitle } from "./Form/Review";
 
 type Page = {
     title: string;
-    form: (({theme}: {theme: string}) => JSX.Element);
+    form: JSX.Element;
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
     suggestions?: JSX.Element;
 }
 
+export const review: ReviewProps = {
+    id: "",
+    locationName: "",
+    visitedDate: new Date().getTime() / 1000,
+};
+
 const pages: Page[] = [{
-    title: "Où êtes-vous ?",
-    form: () => {
-        return (
-            <div className="add__form__content" key="test">
-                <div className="input__container">
-                    <label htmlFor="add__location">Localisation</label>
-                    <input id="add__location" type="text" placeholder="Paris"/>
-                </div>
-            </div>
-        );
-    },
-    onSubmit: (e: React.FormEvent<HTMLFormElement>) => {
-        const location = document.getElementById("add__location") as HTMLInputElement;
-        console.log(location.value);
-        location.value = "";
-        //reset the content of input
-
-    }
+    title: LocationTitle,
+    form: <LocationForm />,
+    onSubmit: LocationOnSubmit
 }, {
-    title: "Donnez-nous plus d'informations",
-    form: () => (
-        <div className="add__form__content" key="test2">
-            <div className="input__container">
-                <label htmlFor="add__cuisine">Type de cuisine</label>
-                <input id="add__cuisine" type="text" placeholder="Japonaise"/>
-            </div>
-            <div className="input__container">
-                <label htmlFor="add__address">Adresse</label>
-                <input id="add__address" type="text" placeholder="1 rue de la paix"/>
-            </div>
-            <div className="input__container">
-                <label htmlFor="add__website">Site web</label>
-                <input id="add__website" type="text" placeholder="https://www.hokkaido.fr"/>
-            </div>
-        </div>
-    ),
-    onSubmit: (e: React.FormEvent<HTMLFormElement>) => {
-
-    }
+    title: InformationsTitle,
+    form: <InformationsForm />,
+    onSubmit: InformationsOnSubmit
 }, {
-    title: "Ajouter des photos",
-    form: () => <AddPictures/>,
-    onSubmit: (e: React.FormEvent<HTMLFormElement>) => {
-
-    }
+    title: PicturesTitle,
+    form: <PicturesForm/>,
+    onSubmit: PicturesOnSubmit
 }, {
-    title: "Donnez-nous votre avis",
-    form: ({theme}) => (
-        <div className="add__form__content">
-            <Rating
-                initialValue={0}
-                fillColor={theme === "light" ? "#524291" : "#9ad45b"}
-                emptyColor="#888888"/>
-            <div className="input__container">
-                <label htmlFor="add__review">Avis sur le restaurant</label>
-                <textarea id="add__review" placeholder="Ce restaurant était très bon..."/>
-            </div>
-        </div>
-    ),
-    onSubmit: (e: React.FormEvent<HTMLFormElement>) => {
-
-    }
+    title: ReviewTitle,
+    form: <ReviewForm />,
+    onSubmit: ReviewOnSubmit
 }];
 
 export default function Add() {
@@ -97,7 +60,7 @@ export default function Add() {
         <form id="add" onSubmit={onSubmit}>
             <PageUI currentPage={currentPage} />
             <h2>{pages[currentPage].title}</h2>
-            {pages[currentPage].form({theme: theme})}
+            {pages[currentPage].form}
             <div className="add__buttons">
                 <input type="button" id="add__buttons__previous" value={"Précédent"} disabled={currentPage === 0} onClick={onBack}/>
                 <div className="fill-space"/>
@@ -117,36 +80,6 @@ const PageUI = ({currentPage}: {currentPage: number}) => {
                     return <div key={index} id="add__page-ui__number"><span>{index+1}</span></div>
                 }
             })}
-        </div>
-    );
-}
-
-function AddPictures() {
-    const [photos, setPhotos] = React.useState<string[]>([]);
-    return (
-        <div className="add__form__content">
-            <div className="input__container">
-                <label htmlFor="add__photos" className="input__photo__container">{photos.length > 0 ? photos.map((e, index) => <img src={e} alt={"Restaurant" + index}/>) : <span>Ajouter des photos</span>}</label>
-                <input id="add__photos" type="file" multiple onChange={(e) => {
-                    e.preventDefault();
-                    const files = e.target.files;
-                    if (files) {
-                        for (let i = 0; i < files.length; i++) {
-                            const file = files[i];
-                            const reader = new FileReader();
-                            reader.onload = (e) => {
-                                if (e.target) {
-                                    const result = e.target.result;
-                                    if (result) {
-                                        setPhotos([...photos, result as string]);
-                                    }
-                                }
-                            }
-                            reader.readAsDataURL(file);
-                        }
-                    }
-                }}/>
-            </div>
         </div>
     );
 }
