@@ -7,7 +7,7 @@ import './App.css';
 import Add from './pages/add/Add';
 import Home from './pages/home/Home';
 import { toggleTheme } from './redux/AppData';
-import { loadDeviceId, loadReviews, setDeviceId } from './redux/ReviewManager';
+import { loadDeviceId, loadReviews } from './redux/ReviewManager';
 import { RootState } from './redux/store';
 import NavigationButtons, { NavigationButtonProps } from './ui-kit/NavigationButtons/NavigationButtons';
 import { HiMoon } from 'react-icons/hi';
@@ -40,17 +40,19 @@ function App() {
 		console.log('Starting DataStore');
 		DataStore.start();
 		return () => removeListener();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
     React.useEffect(() => {
         dispatch(loadReviews(deviceId));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [deviceId]);
 
     console.log("deviceId : " + deviceId);
     return (
         <div id="app" data-theme={theme}>
             <header className='no-select'>
-                <Link to="/" className={"clickable-icon"} id={"header__home-icon"}><img src={require("../src/assets/icons/logo-gtla.png")} className={"clickable-icon"} /></Link>
+                <Link to="/" className={"clickable-icon"} id={"header__home-icon"}><img src={require("../src/assets/icons/logo-gtla.png")} className={"clickable-icon"} alt="GTLA"/></Link>
                 <div className='fill-space'/>
                 <NavigationButtons buttons={header} />
                 <div className='fill-space'/>

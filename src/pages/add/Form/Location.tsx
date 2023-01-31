@@ -1,4 +1,5 @@
 import React from "react";
+import { review } from "../Add";
 
 export const LocationTitle = "Où êtes-vous ?";
 
@@ -16,5 +17,5 @@ export function LocationForm() {
 
 export function LocationOnSubmit(e: React.FormEvent<HTMLFormElement>) {
     const location = document.getElementById("add__location") as HTMLInputElement;
-    //review.locationName = location.value;
+    review.locationName = location.value;
 }

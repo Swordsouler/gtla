@@ -1,5 +1,7 @@
+import { DataStore } from "aws-amplify";
 import React from "react";
 import { useSelector } from "react-redux";
+import { Review } from "../../models";
 import { RootState } from "../../redux/store";
 import { ReviewProps } from "../../ui-kit/Review/Review";
 import "./Add.scss";
@@ -52,8 +54,17 @@ export default function Add() {
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         pages[currentPage].onSubmit(e);
-        if(currentPage < pages.length - 1)
+        if(currentPage < pages.length - 1) {
             setCurrentPage(currentPage + 1);
+        } else {
+            console.log(review);
+            /*DataStore.save(new Review({
+                locationName: review.locationName,
+                visitedDate: review.visitedDate,
+                review: review.review,
+                images: review.images
+            }));*/
+        }
     }
     
     return (
