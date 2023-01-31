@@ -5,13 +5,13 @@ import Review from "../../ui-kit/Review/Review";
 import "./List.scss";
 
 export default function List() {
-    const isLoaded = useSelector((state: RootState) => state.ReviewManager.isLoaded);
+    const statusReviews = useSelector((state: RootState) => state.ReviewManager.status);
     const reviews = useSelector((state: RootState) => state.ReviewManager.reviews);
     const theme = useSelector((state: RootState) => state.AppData.theme);
     return (
         <div id="list">
             {
-                isLoaded ?
+                statusReviews === "idle" ?
                     (reviews.length > 0 ? 
                         reviews.map((review) => <Review key={review.id} {...review} />) : 
                         <div id="list__no-reviews">Aucun avis n'a été trouvé</div>) :

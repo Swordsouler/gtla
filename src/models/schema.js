@@ -141,12 +141,13 @@ export const schema = {
                 },
                 "images": {
                     "name": "images",
-                    "isArray": false,
+                    "isArray": true,
                     "type": {
                         "nonModel": "S3Data"
                     },
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
                 "googleImages": {
                     "name": "googleImages",
@@ -261,6 +262,6 @@ export const schema = {
             }
         }
     },
-    "codegenVersion": "3.3.4",
-    "version": "86fbd4115172d90b6f617596b04f0c7a"
+    "codegenVersion": "3.3.5",
+    "version": "82ba52d0fe746a91dc277033c999a4b9"
 };

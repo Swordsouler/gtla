@@ -7,12 +7,13 @@ import './App.css';
 import Add from './pages/add/Add';
 import Home from './pages/home/Home';
 import { toggleTheme } from './redux/AppData';
-import { loadReviews, loadDeviceId } from './redux/ReviewManager';
+import { loadDeviceId, loadReviews, setDeviceId } from './redux/ReviewManager';
 import { RootState } from './redux/store';
 import NavigationButtons, { NavigationButtonProps } from './ui-kit/NavigationButtons/NavigationButtons';
 import { HiMoon } from 'react-icons/hi';
 import List from './pages/list/List';
 import Map from './pages/map/Map';
+import { ThunkDispatch } from '@reduxjs/toolkit';
 
 const header: NavigationButtonProps[] = [
     {name: "Liste", link: "/list"},
@@ -22,7 +23,7 @@ const header: NavigationButtonProps[] = [
 
 function App() {
 	
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const theme = useSelector((state: RootState) => state.AppData.theme);
     const deviceId = useSelector((state: RootState) => state.ReviewManager.deviceId);
 
@@ -32,7 +33,7 @@ function App() {
             console.log(payload);
 			if (payload.event === 'ready') {
 				console.log('DataStore ready');
-                loadDeviceId(dispatch);
+                dispatch(loadDeviceId());
 			}
 		});
 	
@@ -42,7 +43,7 @@ function App() {
 	}, []);
 
     React.useEffect(() => {
-        loadReviews(dispatch, deviceId);
+        dispatch(loadReviews(deviceId));
     }, [deviceId]);
 
     console.log("deviceId : " + deviceId);

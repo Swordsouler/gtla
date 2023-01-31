@@ -13,22 +13,27 @@ type Page = {
 
 const pages: Page[] = [{
     title: "Où êtes-vous ?",
-    form: () => (
-        <div className="add__form__content">
-            <div className="input__container">
-                <label htmlFor="add__name">Nom du restaurant</label>
-                <input id="add__name" type="text" placeholder="Hokkaido"/>
+    form: () => {
+        return (
+            <div className="add__form__content" key="test">
+                <div className="input__container">
+                    <label htmlFor="add__location">Localisation</label>
+                    <input id="add__location" type="text" placeholder="Paris"/>
+                </div>
             </div>
-        </div>
-    ),
+        );
+    },
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => {
-        const name = document.getElementById("add__name") as HTMLInputElement;
-        console.log(name.value);
+        const location = document.getElementById("add__location") as HTMLInputElement;
+        console.log(location.value);
+        location.value = "";
+        //reset the content of input
+
     }
 }, {
     title: "Donnez-nous plus d'informations",
     form: () => (
-        <div className="add__form__content">
+        <div className="add__form__content" key="test2">
             <div className="input__container">
                 <label htmlFor="add__cuisine">Type de cuisine</label>
                 <input id="add__cuisine" type="text" placeholder="Japonaise"/>
