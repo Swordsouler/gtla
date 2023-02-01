@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { Rating } from 'react-simple-star-rating';
 import { S3Data } from '../../models';
-import { onClickReview } from '../../redux/ReviewManager';
+import { getFileExtension, onClickReview } from '../../redux/ReviewManager';
 import { RootState } from '../../redux/store';
 import './Review.scss';
 
@@ -19,7 +19,7 @@ export type ReviewProps = {
     type?: string;
     review?: string;
     visitedDate: number;
-    images?: S3Data;
+    images?: S3Data[];
     googleImages?: string[];
     createdAt?: string;
     updatedAt?: string;
@@ -33,7 +33,7 @@ export default React.memo((props: ReviewProps) => {
     };
     const theme = useSelector((state: RootState) => state.AppData.theme);
     const visitedDate = moment(new Date(props.visitedDate*1000)).format("DD/MM/YYYY");
-    console.log(props);
+    //console.log(props);
     return (
         <div id="review">
             <div id="review__header" className="no-select" onClick={onClick}>
@@ -126,10 +126,14 @@ const RatingToString = (rating: number) => {
 }
 
 const ImagesCarousel = (props: ReviewProps) => {
+    const deviceId = useSelector((state: RootState) => state.ReviewManager.deviceId);
+    console.log(props.images);
     return (
         <div id="review__content__carousel">
-            <img src="https://www.eau-a-la-bouche.fr/wp-content/uploads/2022/01/hokkaido-paris.png" alt='Restaurant 1'/>
-            <img src="https://assets.justacote.com/photos_entreprises/hokkaido-paris-14490420520.png" alt='Restaurant 2'/>
+            {
+            props.images?.map((image, index) => 
+                <img src={image.key} alt={'Restaurant ' + index}/>)
+            }
         </div>
     );
 }

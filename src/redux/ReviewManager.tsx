@@ -98,3 +98,9 @@ export const loadReviews = createAsyncThunk(
 		return JSON.stringify(reviews);
 	}
 );
+
+export function getFileExtension(filename: string){
+    // get file extension
+    const extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length);
+    return extension;
+}

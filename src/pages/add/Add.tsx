@@ -1,17 +1,18 @@
-import { ThunkAction, ThunkDispatch } from "@reduxjs/toolkit";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import { DataStore } from "aws-amplify";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { Review } from "../../models";
-import { loadReviews } from "../../redux/ReviewManager";
+import { Review, S3Data } from "../../models";
+import { getFileExtension, loadReviews } from "../../redux/ReviewManager";
 import { RootState } from "../../redux/store";
 import { ReviewProps } from "../../ui-kit/Review/Review";
 import "./Add.scss";
 import { InformationsTitle, InformationsForm, InformationsOnSubmit } from "./Form/Informations";
 import { LocationForm, LocationOnSubmit, LocationTitle } from "./Form/Location";
-import { PicturesForm, PicturesOnSubmit, PicturesTitle } from "./Form/Pictures";
+import { pictures, PicturesForm, PicturesOnSubmit, PicturesTitle } from "./Form/Pictures";
 import { ReviewForm, ReviewOnSubmit, ReviewTitle } from "./Form/Review";
+import { Storage } from "@aws-amplify/storage";
 
 type Page = {
     title: string;
@@ -78,7 +79,7 @@ export default function Add() {
         } else {
             setIsSubmitting(true);
             review.visitedDate = Math.trunc(new Date().getTime() / 1000);
-            await DataStore.save(new Review({
+            const newReview = await DataStore.save(new Review({
                 locationName: review.locationName,
                 longitude: review.longitude,
                 latitude: review.latitude,
@@ -92,6 +93,30 @@ export default function Add() {
                 "googleImages": [],
                 userID: deviceId
             }));
+            const images: S3Data[] = [];
+            for(let i = 0; i < pictures.length; i++) {
+                const picture = pictures[i];
+                console.log("picture", picture);
+                await Storage.put(deviceId + "/" + newReview.id + "-" + i + "." + getFileExtension(picture.name), picture, {
+                    contentType: picture.type
+                });
+                images.push(new S3Data({
+                    key: deviceId + "/" + newReview.id + "-" + i + "." + getFileExtension(picture.name),
+                    level: "PUBLIC",
+                    identityId: "",
+                    version: "1"
+                }));
+            }
+            console.log("images", images);
+            if(images.length > 0) {
+                let updated = await DataStore.query(Review, newReview.id);
+                if(updated) {
+                    updated = await DataStore.save(Review.copyOf(updated, updated => {
+                        updated.images = images;
+                    }));
+                    console.log("updated", updated);
+                }
+            }
             dispatch(loadReviews(deviceId));
             navigate("/list");
             setIsSubmitting(false);
