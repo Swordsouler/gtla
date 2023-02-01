@@ -1,0 +1,23 @@
+{
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-gtla-prod-145011-authRole",
+      "UnauthRoleArn": "arn:aws:iam::217809262647:role/amplify-gtla-prod-145011-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::217809262647:role/amplify-gtla-prod-145011-authRole",
+      "Region": "eu-west-3",
+      "DeploymentBucketName": "amplify-gtla-prod-145011-deployment",
+      "UnauthRoleName": "amplify-gtla-prod-145011-unauthRole",
+      "StackName": "amplify-gtla-prod-145011",
+      "StackId": "arn:aws:cloudformation:eu-west-3:217809262647:stack/amplify-gtla-prod-145011/9221f920-9cbf-11ed-acea-0ec8a443181a",
+      "AmplifyAppId": "d3ke7zdkefm9bm"
+    },
+    "categories": {
+      "auth": {
+        "GTLA": {}
+      },
+      "storage": {
+        "s3gtlastorage88691f07": {}
+      }
+    }
+  }
+}

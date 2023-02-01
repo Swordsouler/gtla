@@ -262,6 +262,6 @@ export const schema = {
             }
         }
     },
-    "codegenVersion": "3.3.5",
+    "codegenVersion": "3.3.4",
     "version": "82ba52d0fe746a91dc277033c999a4b9"
 };

@@ -30,7 +30,7 @@ function App() {
 	React.useEffect(() => {
         
 		const removeListener = Hub.listen('datastore', async ({ payload }) => {
-            console.log(payload);
+            //console.log(payload);
 			if (payload.event === 'ready') {
 				console.log('DataStore ready');
                 dispatch(loadDeviceId());

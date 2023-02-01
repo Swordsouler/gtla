@@ -4,12 +4,12 @@ import { review } from "../Add";
 export const LocationTitle = "Où êtes-vous ?";
 
 export function LocationForm() {
-    const [location, setLocation] = React.useState("");
+    const [location, setLocation] = React.useState(review.locationName);
     return (
         <div className="add__form__content" key="location">
             <div className="input__container">
-                <label htmlFor="add__location">Localisation</label>
-                <input id="add__location" type="text" placeholder="Paris" value={location} onChange={(e) => setLocation(e.target.value)}/>
+                <label htmlFor="add__location">Nom du restaurant</label>
+                <input id="add__location" type="text" placeholder="Paris" required value={location} onChange={(e) => setLocation(e.target.value)} autoFocus/>
             </div>
         </div>
     );

@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DataStore } from "aws-amplify";
+import { DataStore, SortDirection } from "aws-amplify";
 import { Review } from "../models";
 import { User } from "../models";
+import { review } from "../pages/add/Add";
 import { ReviewProps } from "../ui-kit/Review/Review";
 
 type ReviewManager = {
@@ -22,14 +23,6 @@ export const ReviewManagerSlice = createSlice({
 	name: "ReviewManager",
 	initialState: initialState,
 	reducers: {
-		setDeviceId: (state, action: PayloadAction<string>) => {
-			state.deviceId = action.payload;
-			localStorage.setItem("deviceId", action.payload);
-		},
-		setReviews: (state, action: PayloadAction<string>) => {
-			if(state.deviceId === "") return;
-			state.reviews = JSON.parse(action.payload);
-		},
 		onClickReview: (state, action: PayloadAction<string>) => {
 			if (state.reviews.length === 0) return;
 			if (state.currentReview && state.currentReview.id === action.payload) {
@@ -56,11 +49,12 @@ export const ReviewManagerSlice = createSlice({
 			})
 			.addCase(loadDeviceId.fulfilled, (state, action) => {
 				state.deviceId = action.payload;
+				localStorage.setItem("deviceId", action.payload);
 			});
 	},
 });
 
-export const { setReviews, onClickReview, setDeviceId } = ReviewManagerSlice.actions;
+export const { onClickReview } = ReviewManagerSlice.actions;
 export default ReviewManagerSlice.reducer;
 
 export const loadDeviceId = createAsyncThunk(
@@ -84,7 +78,9 @@ export const loadReviews = createAsyncThunk(
 	async (deviceId: string) => {
 		if(deviceId === "") return;
 		const reviews: ReviewProps[] = [];
-		const query = (await DataStore.query(Review, (r) => r.userID.eq(deviceId)));
+		const query = (await DataStore.query(Review, (r) => r.userID.eq(deviceId), {
+			sort: r => r.rating(SortDirection.DESCENDING).locationName(SortDirection.ASCENDING)
+		}));
 		query.forEach((review) => {
 			reviews.push({
 				id: review.id,
@@ -94,7 +90,9 @@ export const loadReviews = createAsyncThunk(
 				website: review.website ?? undefined,
 				type: review.type ?? undefined,
 				visitedDate: review.visitedDate,
-				locationName: review.locationName
+				locationName: review.locationName,
+				rating: review.rating ?? undefined,
+				review: review.review ?? undefined,
 			});
 		});
 		return JSON.stringify(reviews);

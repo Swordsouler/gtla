@@ -8,12 +8,13 @@ export default function List() {
     const statusReviews = useSelector((state: RootState) => state.ReviewManager.status);
     const reviews = useSelector((state: RootState) => state.ReviewManager.reviews);
     const theme = useSelector((state: RootState) => state.AppData.theme);
+    const currentReview = useSelector((state: RootState) => state.ReviewManager.currentReview);
     return (
         <div id="list">
             {
                 statusReviews === "idle" ?
                     (reviews.length > 0 ? 
-                        reviews.map((review) => <Review key={review.id} {...review} />) : 
+                        reviews.map((review) => <Review key={review.id} {...review} isShown={currentReview?.id === review.id} />) : 
                         <div id="list__no-reviews">Aucun avis n'a été trouvé</div>) :
                         <div id="list__spinner"><Spinner size={30} color={theme === "light" ? "#524291" : "#9ad45b"} /></div>
             }

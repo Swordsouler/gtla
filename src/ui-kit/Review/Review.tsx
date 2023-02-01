@@ -23,24 +23,23 @@ export type ReviewProps = {
     googleImages?: string[];
     createdAt?: string;
     updatedAt?: string;
+    isShown?: boolean;
 };
 
 export default React.memo((props: ReviewProps) => {
     const dispatch = useDispatch();
-    const currentReview = useSelector((state: RootState) => state.ReviewManager.currentReview);
-    const isShown = currentReview?.id === props.id;
     const onClick = () => {
         dispatch(onClickReview(props.id));
     };
     const theme = useSelector((state: RootState) => state.AppData.theme);
     const visitedDate = moment(new Date(props.visitedDate*1000)).format("DD/MM/YYYY");
-    
+    console.log(props);
     return (
         <div id="review">
             <div id="review__header" className="no-select" onClick={onClick}>
                 <Rating
                     readonly
-                    initialValue={3}
+                    initialValue={props.rating ?? 0}
                     fillColor={theme === "light" ? "#524291" : "#9ad45b"}
                     emptyColor="#888888"
                     style={{height: "22px"}}
@@ -48,7 +47,7 @@ export default React.memo((props: ReviewProps) => {
                 <span id="review__location-name">{props.locationName}</span>
                 <span id="review__date">{visitedDate}</span>
             </div>
-            <div id={"review__content" + (isShown ? "__visible" : "__hidden")} className={"review__content"}>
+            <div id={"review__content" + (props.isShown ? "__visible" : "__hidden")} className={"review__content"}>
                 <Sentences {...props}/>
                 <Review {...props}/>
                 <ImagesCarousel {...props}/>
@@ -64,7 +63,7 @@ const Sentences = (props: ReviewProps) => {
     const website = props.website;
     const rating = props.rating;
     const sentences: JSX.Element[] = [];
-    sentences.push(<span key={sentences.length}>{props.locationName}</span>);
+    sentences.push(<span key={sentences.length} className='review__content__bold'>{props.locationName}</span>);
     sentences.push(<span key={sentences.length}> est un </span>);
     sentences.push(<span key={sentences.length} className='review__content__bold'>{type?.toLowerCase() ?? "restaurant"}</span>);
     if (address) {
