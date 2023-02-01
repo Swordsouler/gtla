@@ -59,16 +59,18 @@ export default function Add() {
     }
 
     React.useEffect(() => {
-        review.id = "";
-        review.locationName = "";
-        review.visitedDate = 0;
-        review.type = undefined;
-        review.address = undefined;
-        review.website = undefined;
-        review.review = undefined;
-        review.rating = undefined;
-        review.longitude = undefined;
-        review.latitude = undefined;
+        return () => {
+            review.id = "";
+            review.locationName = "";
+            review.visitedDate = 0;
+            review.type = undefined;
+            review.address = undefined;
+            review.website = undefined;
+            review.review = undefined;
+            review.rating = undefined;
+            review.longitude = undefined;
+            review.latitude = undefined;
+        };
     }, []);
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -78,7 +80,7 @@ export default function Add() {
             setCurrentPage(currentPage + 1);
         } else {
             setIsSubmitting(true);
-            review.visitedDate = Math.trunc(new Date().getTime() / 1000);
+            review.visitedDate = new Date().getTime();
             const newReview = await DataStore.save(new Review({
                 locationName: review.locationName,
                 longitude: review.longitude,
@@ -109,14 +111,25 @@ export default function Add() {
             }
             console.log("images", images);
             if(images.length > 0) {
-                let updated = await DataStore.query(Review, newReview.id);
-                if(updated) {
-                    updated = await DataStore.save(Review.copyOf(updated, updated => {
-                        updated.images = images;
-                    }));
-                    console.log("updated", updated);
-                }
+                let updated = await DataStore.save(Review.copyOf(newReview, updated => {
+                    updated.images = images;
+                    return updated;
+                }));
+                console.log("updated", updated);
             }
+            /*setTimeout(async () => {
+                if(images.length > 0) {
+                    let updated = await DataStore.query(Review, newReview.id);
+                    if(updated) {
+                        updated = await DataStore.save(Review.copyOf(updated, updated => {
+                            updated.images = images;
+                            updated.review = "review.review";
+                            return updated;
+                        }));
+                        console.log("updated", updated);
+                    }
+                }
+            }, 1000);*/
             dispatch(loadReviews(deviceId));
             navigate("/list");
             setIsSubmitting(false);

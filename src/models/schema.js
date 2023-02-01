@@ -58,6 +58,8 @@ export const schema = {
                                 "allow": "public",
                                 "operations": [
                                     "create",
+                                    "update",
+                                    "delete",
                                     "read"
                                 ]
                             }
@@ -147,7 +149,7 @@ export const schema = {
                     },
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": true
+                    "isArrayNullable": false
                 },
                 "googleImages": {
                     "name": "googleImages",
@@ -155,7 +157,7 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": true
+                    "isArrayNullable": false
                 },
                 "userID": {
                     "name": "userID",
@@ -205,8 +207,9 @@ export const schema = {
                                 "allow": "public",
                                 "operations": [
                                     "create",
-                                    "read",
-                                    "delete"
+                                    "update",
+                                    "delete",
+                                    "read"
                                 ]
                             }
                         ]
@@ -263,5 +266,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.5",
-    "version": "82ba52d0fe746a91dc277033c999a4b9"
+    "version": "18747e8abda84d6a8e90bf191933a2cd"
 };

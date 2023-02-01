@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { Rating } from 'react-simple-star-rating';
-import { S3Data } from '../../models';
+import { LazyS3Data, S3Data } from '../../models';
 import { getFileExtension, onClickReview } from '../../redux/ReviewManager';
 import { RootState } from '../../redux/store';
 import './Review.scss';
@@ -19,7 +19,7 @@ export type ReviewProps = {
     type?: string;
     review?: string;
     visitedDate: number;
-    images?: S3Data[];
+    images?: (LazyS3Data | null)[];
     googleImages?: string[];
     createdAt?: string;
     updatedAt?: string;
@@ -32,8 +32,8 @@ export default React.memo((props: ReviewProps) => {
         dispatch(onClickReview(props.id));
     };
     const theme = useSelector((state: RootState) => state.AppData.theme);
-    const visitedDate = moment(new Date(props.visitedDate*1000)).format("DD/MM/YYYY");
-    //console.log(props);
+    const visitedDate = moment(new Date(props.visitedDate)).format("DD/MM/YYYY");
+    console.log(props);
     return (
         <div id="review">
             <div id="review__header" className="no-select" onClick={onClick}>
@@ -126,13 +126,16 @@ const RatingToString = (rating: number) => {
 }
 
 const ImagesCarousel = (props: ReviewProps) => {
-    const deviceId = useSelector((state: RootState) => state.ReviewManager.deviceId);
-    console.log(props.images);
+    if (props.images === null || props.images === undefined || props.images.length === 0) return null;
     return (
         <div id="review__content__carousel">
             {
-            props.images?.map((image, index) => 
-                <img src={image.key} alt={'Restaurant ' + index}/>)
+            props.images.map((image, index) => {
+                if(image === null || image === undefined) return null;
+                return (
+                    <img src={"https://gtla-storage-88691f07145011-prod.s3.eu-west-3.amazonaws.com/public/" + image.key} alt={'Restaurant ' + index} key={"Restaurant " + index}/>
+                );
+            })
             }
         </div>
     );

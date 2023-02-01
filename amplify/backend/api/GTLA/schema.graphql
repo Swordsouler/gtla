@@ -1,4 +1,4 @@
-type User @model @auth(rules: [{allow: public, operations: [create, read]}]) {
+type User @model @auth(rules: [{allow: public}]) {
   id: ID!
   Reviews: [Review] @hasMany(indexName: "byUser", fields: ["id"])
 }
@@ -16,7 +16,7 @@ type S3Data {
   version: String!
 }
 
-type Review @model @auth(rules: [{allow: public, operations: [create, read, delete]}]) {
+type Review @model @auth(rules: [{allow: public}]) {
   id: ID!
   locationName: String!
   longitude: Float
@@ -27,8 +27,8 @@ type Review @model @auth(rules: [{allow: public, operations: [create, read, dele
   rating: Int
   review: String
   visitedDate: AWSTimestamp!
-  images: [S3Data]
-  googleImages: [String]
+  images: [S3Data]!
+  googleImages: [String]!
   userID: ID! @index(name: "byUser")
 }
  

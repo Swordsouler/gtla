@@ -82,6 +82,7 @@ export const loadReviews = createAsyncThunk(
 			sort: r => r.rating(SortDirection.DESCENDING).locationName(SortDirection.ASCENDING)
 		}));
 		query.forEach((review) => {
+			console.log(review);
 			reviews.push({
 				id: review.id,
 				latitude: review.latitude ?? undefined,
@@ -93,6 +94,7 @@ export const loadReviews = createAsyncThunk(
 				locationName: review.locationName,
 				rating: review.rating ?? undefined,
 				review: review.review ?? undefined,
+				images: review.images ?? undefined,
 			});
 		});
 		return JSON.stringify(reviews);
