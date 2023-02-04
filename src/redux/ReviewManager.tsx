@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DataStore, SortDirection } from "aws-amplify";
 import { Review } from "../models";
 import { User } from "../models";
-import { review } from "../pages/add/Add";
 import { ReviewProps } from "../ui-kit/Review/Review";
 
 type ReviewManager = {
@@ -82,7 +81,6 @@ export const loadReviews = createAsyncThunk(
 			sort: r => r.rating(SortDirection.DESCENDING).locationName(SortDirection.ASCENDING)
 		}));
 		query.forEach((review) => {
-			console.log(review);
 			reviews.push({
 				id: review.id,
 				latitude: review.latitude ?? undefined,
@@ -95,6 +93,7 @@ export const loadReviews = createAsyncThunk(
 				rating: review.rating ?? undefined,
 				review: review.review ?? undefined,
 				images: review.images ?? undefined,
+				googleImages: review.googleImages ?? undefined,
 			});
 		});
 		return JSON.stringify(reviews);

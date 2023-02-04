@@ -9,7 +9,7 @@ import { RootState } from "../../redux/store";
 import { ReviewProps } from "../../ui-kit/Review/Review";
 import "./Add.scss";
 import { InformationsTitle, InformationsForm, InformationsOnSubmit } from "./Form/Informations";
-import { LocationForm, LocationOnSubmit, LocationTitle } from "./Form/Location";
+import { LocationForm, LocationOnSubmit, LocationSuggestions, LocationTitle } from "./Form/Location";
 import { pictures, PicturesForm, PicturesOnSubmit, PicturesTitle } from "./Form/Pictures";
 import { ReviewForm, ReviewOnSubmit, ReviewTitle } from "./Form/Review";
 import { Storage } from "@aws-amplify/storage";
@@ -30,7 +30,8 @@ export const review: ReviewProps = {
 const pages: Page[] = [{
     title: LocationTitle,
     form: <LocationForm />,
-    onSubmit: LocationOnSubmit
+    onSubmit: LocationOnSubmit,
+    suggestions: <LocationSuggestions />,
 }, {
     title: InformationsTitle,
     form: <InformationsForm />,
@@ -70,11 +71,14 @@ export default function Add() {
             review.rating = undefined;
             review.longitude = undefined;
             review.latitude = undefined;
+            review.googleImages = undefined;
+            review.images = undefined;
         };
     }, []);
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log("submitting")
         pages[currentPage].onSubmit(e);
         if(currentPage < pages.length - 1) {
             setCurrentPage(currentPage + 1);
@@ -92,7 +96,7 @@ export default function Add() {
                 rating: review.rating,
                 visitedDate: review.visitedDate,
                 "images": [],
-                "googleImages": [],
+                googleImages: review.googleImages ?? [],
                 userID: deviceId
             }));
             const images: S3Data[] = [];
@@ -130,6 +134,7 @@ export default function Add() {
                 <div className="fill-space"/>
                 <input type="submit" id="add__buttons__next" value={currentPage === pages.length - 1 ? "Terminer" : "Suivant"} disabled={isSubmitting}/>
             </div>
+            {pages[currentPage].suggestions}
         </form>
     );
 }

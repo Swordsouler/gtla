@@ -3,8 +3,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { Rating } from 'react-simple-star-rating';
-import { LazyS3Data, S3Data } from '../../models';
-import { getFileExtension, onClickReview } from '../../redux/ReviewManager';
+import { LazyS3Data } from '../../models';
+import { onClickReview } from '../../redux/ReviewManager';
 import { RootState } from '../../redux/store';
 import './Review.scss';
 
@@ -20,7 +20,7 @@ export type ReviewProps = {
     review?: string;
     visitedDate: number;
     images?: (LazyS3Data | null)[];
-    googleImages?: string[];
+    googleImages?: (string | null)[];
     createdAt?: string;
     updatedAt?: string;
     isShown?: boolean;

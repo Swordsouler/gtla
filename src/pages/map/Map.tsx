@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import Review from "../../ui-kit/Review/Review";
 import "./Map.scss";
 
+///TODO Duc-Bao
 export default function Map() {
     const reviews = useSelector((state: RootState) => state.ReviewManager.reviews);
     return (

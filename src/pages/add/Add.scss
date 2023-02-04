@@ -186,3 +186,26 @@
 .add__page-ui__number__disabled:not(:last-child)::after, .add__page-ui__number__disabled:not(:first-child)::before {
     background-color: var(--color-background-hard) !important;
 }
+
+#suggestion {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+#suggestion__location {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    background-color: var(--color-background-hard);
+    border-radius: 10px;
+    font-size: 18px;
+    height: 37px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: var(--color-text);
+    box-shadow: 0 0 5px 0 var(--color-primary);
+}
+#suggestion__location:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text-on-primary);
+}
