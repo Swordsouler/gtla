@@ -4,25 +4,8 @@ import "./Map.scss";
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import React from "react";
 
-type ReviewProps = {
-    id: string,
-    locationName: string;
-    latitude?: number;
-    longitude?: number;
-    address?: string;
-    website?: string;
-    rating?: number;
-    type?: string;
-    review?: string;
-    visitedDate: number;
-    images?: (LazyS3Data | null)[];
-    googleImages?: (string | null)[];
-    createdAt?: string;
-    updatedAt?: string;
-    isShown?: boolean;
-};
-
-// dummy array of reviews
+// TO DELETE: dummy array of reviews
+import { ReviewProps } from "../../ui-kit/Review/Review";
 const reviews: ReviewProps[] = [
     {
         id: "1",
@@ -31,7 +14,6 @@ const reviews: ReviewProps[] = [
         longitude: 2.341,
         address: "Paris",
         website: "https://www.paris.fr/",
-
         rating: 5,
         type: "Restaurant",
         visitedDate: 1620000000
@@ -43,7 +25,15 @@ const reviews: ReviewProps[] = [
         longitude: 2.337,
         address: "Paris",
         website: "https://www.paris.fr/",
-
+        rating: 5,
+        type: "Restaurant",
+        visitedDate: 1620000000
+    },
+    {
+        id: "3",
+        locationName: "No coords resto",
+        address: "Paris",
+        website: "https://www.paris.fr/",
         rating: 5,
         type: "Restaurant",
         visitedDate: 1620000000
@@ -90,23 +80,76 @@ export default function Map() {
             zoom={10}
             onLoad={onLoad}
             onUnmount={onUnmount}
+            options={{
+                styles: [
+                    {
+                        "featureType": "all",
+                        "elementType": "labels.text",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "labels.icon",
+                        "stylers": [
+                            {
+                                "visibility": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "stylers": [
+                            {
+                                "visibility": "on"
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative",
+                        "stylers": [
+                            {
+                                "visibility": "on"
+                            }
+                        ]
+                    }
+                ]
+            }}
         >
             { /* Child components, such as markers, info windows, etc. */}
 
             {reviews.map((review) => {
                 return (
+                    review.latitude && review.longitude &&
                     <Marker
                         key={review.id}
                         position={{ lat: review.latitude, lng: review.longitude }}
-                        label={review.locationName}
+                        icon={{
+                            url: "http://maps.google.com/mapfiles/ms/micons/green-dot.png",
+                            size: new google.maps.Size(32, 32),
+                            labelOrigin: new google.maps.Point(16, -16),
+                        }}
+                        label={
+                            {
+                                text: review.locationName,
+                                color: "#458600",
+                                fontWeight: "bold",
+                                fontSize: "16px"
+                            }
+                        }
                         onClick={() => {
                             console.log("clicked on, ", review.locationName);
                         }}
+                        onLoad={() => {
+                            console.log(review.locationName, "shown on map");
+                        }}
+
                     />
                 )
             })}
-
-            <></>
         </GoogleMap>
     ) : <></>
 }
