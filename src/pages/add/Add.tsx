@@ -98,7 +98,6 @@ export default function Add() {
             const images: S3Data[] = [];
             for(let i = 0; i < pictures.length; i++) {
                 const picture = pictures[i];
-                console.log("picture", picture);
                 await Storage.put(deviceId + "/" + newReview.id + "-" + i + "." + getFileExtension(picture.name), picture, {
                     contentType: picture.type
                 });
@@ -109,27 +108,12 @@ export default function Add() {
                     version: "1"
                 }));
             }
-            console.log("images", images);
             if(images.length > 0) {
-                let updated = await DataStore.save(Review.copyOf(newReview, updated => {
+                await DataStore.save(Review.copyOf(newReview, updated => {
                     updated.images = images;
                     return updated;
                 }));
-                console.log("updated", updated);
             }
-            /*setTimeout(async () => {
-                if(images.length > 0) {
-                    let updated = await DataStore.query(Review, newReview.id);
-                    if(updated) {
-                        updated = await DataStore.save(Review.copyOf(updated, updated => {
-                            updated.images = images;
-                            updated.review = "review.review";
-                            return updated;
-                        }));
-                        console.log("updated", updated);
-                    }
-                }
-            }, 1000);*/
             dispatch(loadReviews(deviceId));
             navigate("/list");
             setIsSubmitting(false);
