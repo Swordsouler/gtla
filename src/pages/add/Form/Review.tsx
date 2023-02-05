@@ -5,18 +5,18 @@ import { RootState } from "../../../redux/store";
 import { review } from "../Add";
 
 export const ReviewTitle = "Donnez-nous votre avis";
-let rating = 0;
+let rating = 3;
 
 export function ReviewForm() {
     const [advice, setAdvice] = React.useState(review.review);
     const theme = useSelector((state: RootState) => state.AppData.theme);
     React.useEffect(() => {
-        rating = 0;
+        rating = 3;
     }, []);
     return (
         <div className="add__form__content" key="review">
             <Rating
-                initialValue={0}
+                initialValue={3}
                 fillColor={theme === "light" ? "#524291" : "#9ad45b"}
                 emptyColor="#888888"
                 onClick={(rate: number) => {

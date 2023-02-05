@@ -167,14 +167,19 @@ const RatingToString = (rating: number) => {
 
 const ImagesCarousel = (props: ReviewProps) => {
   if (
-    props.images === null ||
+    (props.images === null ||
     props.images === undefined ||
-    props.images.length === 0
+    props.images.length === 0) &&
+    (props.googleImages === null ||
+    props.googleImages === undefined ||
+    props.googleImages.length === 0)
   )
     return null;
   return (
     <div id="review__content__carousel">
-      {props.images.map((image, index) => {
+      {!(props.images === null ||
+        props.images === undefined ||
+        props.images.length === 0) && props.images.map((image, index) => {
         if (image === null || image === undefined) return null;
         return (
           <img
@@ -182,6 +187,18 @@ const ImagesCarousel = (props: ReviewProps) => {
               "https://gtla-storage-88691f07145011-prod.s3.eu-west-3.amazonaws.com/public/" +
               image.key
             }
+            alt={"Restaurant " + index}
+            key={"Restaurant " + index}
+          />
+        );
+      })}
+      {!(props.googleImages === null ||
+        props.googleImages === undefined ||
+        props.googleImages.length === 0) && props.googleImages.map((image, index) => {
+        if (image === null || image === undefined) return null;
+        return (
+          <img
+            src={image}
             alt={"Restaurant " + index}
             key={"Restaurant " + index}
           />

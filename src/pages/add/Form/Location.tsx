@@ -53,7 +53,7 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
     placeId: string;
   };
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "MAPS_API_KEY",
+    googleMapsApiKey: "AIzaSyAU4mA__inbVKNiUEEUobEDHXclCmS5khI",
     libraries: MapsLibraries,
   });
   const [waiting, setWaiting] = React.useState<boolean>(true);
@@ -197,39 +197,43 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
   if (waiting && !props.autocomplete)
     return (
       <div>
-        Tapez quelque chose ou cliquez ici
-        <button
+        <input
+          className="no-select"
           type="button"
+          id="suggestion__location__search"
           onClick={() => {
             setWaiting(false);
             getRestaurantNearby();
           }}
-        >
-          Cherchez à proximité
-        </button>
+          value="Rechercher des restaurants à proximité"
+        />
       </div>
     );
   return (
-    <div id="suggestion">
+    <div>
       <GoogleMap onLoad={mapLoad}></GoogleMap>
-      {suggestions.length > 0 ? (
-        suggestions.map((e, i) => (
-          <span
-            id="suggestion__location"
-            key={"Suggestion " + i}
-            onClick={() => onClick(e)}
-          >
-            {e.name} {e.address ? " - " + e.address : ""}
-          </span>
-        ))
-      ) : (
-        <div id="list__spinner">
-          <Spinner
-            size={15}
-            color={theme === "light" ? "#524291" : "#9ad45b"}
-          />
-        </div>
-      )}
+      <div id="suggestion">
+        {suggestions.length > 0 ? (
+          suggestions.map((e, i) => (
+            <span
+              className="no-select"
+              id="suggestion__location"
+              key={"Suggestion " + i}
+              onClick={() => onClick(e)}
+            >
+              <strong>{e.name}</strong>
+              {e.address}
+            </span>
+          ))
+        ) : (
+          <div id="list__spinner">
+            <Spinner
+              size={15}
+              color={theme === "light" ? "#524291" : "#9ad45b"}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

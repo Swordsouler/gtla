@@ -33,7 +33,7 @@ type Page = {
 export const review: ReviewProps = {
   id: "",
   locationName: "",
-  visitedDate: 0,
+  visitedDate: 0
 };
 
 const pages: Page[] = [
@@ -97,7 +97,6 @@ export default function Add() {
       setCurrentPage(currentPage + 1);
     } else {
       setIsSubmitting(true);
-      review.visitedDate = new Date().getTime();
       const newReview = await DataStore.save(
         new Review({
           locationName: review.locationName,
@@ -165,7 +164,7 @@ export default function Add() {
       <PageUI currentPage={currentPage} />
       <h2>{pages[currentPage].title}</h2>
       {pages[currentPage].form}
-      <div className="add__buttons">
+      <div className="add__buttons" style={{display: currentPage === 0 ? "none" : "flex"}}>
         <input
           type="button"
           id="add__buttons__previous"
