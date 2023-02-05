@@ -52,20 +52,20 @@ const AddReview: JSX.Element[] = [
 const ShareList = (): JSX.Element[]  => {
 
     const selfId = useSelector((state: RootState) => state.ReviewManager.selfId);
-    console.log(process.env);
     if(!selfId) return [];
     return [
         <span key={0}>Envoyer le </span>,
         <Link key={1} className='review__content__bold' to={"/list/" + selfId}>lien</Link>,
         <span key={2}> de votre liste de restaurant à vos amis. Ou bien, utiliser le QRCode ci-dessous.</span>,
         <br key={3}/>,
-        <div key={4} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+        <span key={4} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
             <QRCode
+                key={4}
                 size={256}
-                style={{ height: "100px", width: "100px", marginTop: "10px", outline: "1px solid var(--color-primary)"}}
-                value={(process.env.PUBLIC_URL === "" ? "http://localhost:3000/" : process.env.PUBLIC_URL)  + "/list/" + selfId}
+                style={{ height: "150px", width: "150px", marginTop: "10px", outline: "1px solid var(--color-primary)"}}
+                value={(process.env.REACT_APP_REDIRECT_URL)  + "/list/" + selfId}
                 viewBox={`0 0 256 256`}
                 />
-        </div>
+        </span>
     ]
 };
