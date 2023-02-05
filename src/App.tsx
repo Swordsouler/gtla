@@ -22,7 +22,6 @@ const header: NavigationButtonProps[] = [
 ];
 
 function App() {
-    console.log(process.env);
 	
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const theme = useSelector((state: RootState) => state.AppData.theme);
