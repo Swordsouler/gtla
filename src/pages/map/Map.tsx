@@ -52,7 +52,7 @@ export default function Map() {
   };
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "MAPS_API_KEY",
+    googleMapsApiKey: process.env.REACT_APP_MAPS_KEY ?? "",
     libraries: MapsLibraries,
   });
 
