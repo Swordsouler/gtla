@@ -53,7 +53,7 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
     placeId: string;
   };
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAU4mA__inbVKNiUEEUobEDHXclCmS5khI",
+    googleMapsApiKey: process.env.REACT_APP_MAPS_KEY ?? "",
     libraries: MapsLibraries,
   });
   const [waiting, setWaiting] = React.useState<boolean>(true);
