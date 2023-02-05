@@ -86,12 +86,12 @@ export default function Add() {
       review.latitude = undefined;
       review.googleImages = undefined;
       review.images = undefined;
+      pictures.length = 0;
     };
   }, []);
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
-    console.log("submitting");
     pages[currentPage].onSubmit(e);
     if (currentPage < pages.length - 1) {
       setCurrentPage(currentPage + 1);
@@ -174,10 +174,17 @@ export default function Add() {
         />
         <div className="fill-space" />
         <input
-          type="submit"
+          type={"submit"}
           id="add__buttons__next"
           value={currentPage === pages.length - 1 ? "Terminer" : "Suivant"}
-          disabled={isSubmitting}
+          disabled={isSubmitting || currentPage === 0}
+        />
+        <input
+          type={"submit"}
+          id="add__buttons__first-form"
+          value={""}
+          style={{ display: "none" }}
+          onClick={(e) => onSubmit(e)}
         />
       </div>
     </form>

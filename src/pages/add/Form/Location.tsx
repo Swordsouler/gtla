@@ -182,7 +182,7 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
     //submit le formulaire
     //@ts-ignore
     document.getElementById("add__location").value = restaurant.name;
-    document.getElementById("add__buttons__next")?.click();
+    document.getElementById("add__buttons__first-form")?.click();
   };
   const mapLoad = React.useCallback(
     (maps: google.maps.Map) => {
