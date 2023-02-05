@@ -52,6 +52,7 @@ const AddReview: JSX.Element[] = [
 const ShareList = (): JSX.Element[]  => {
 
     const selfId = useSelector((state: RootState) => state.ReviewManager.selfId);
+    console.log(process.env);
     if(!selfId) return [];
     return [
         <span key={0}>Envoyer le </span>,
@@ -62,7 +63,7 @@ const ShareList = (): JSX.Element[]  => {
             <QRCode
                 size={256}
                 style={{ height: "100px", width: "100px", marginTop: "10px", outline: "1px solid var(--color-primary)"}}
-                value={process.env.PUBLIC_URL  + "/list/" + selfId}
+                value={(process.env.PUBLIC_URL === "" ? "http://localhost:3000/" : process.env.PUBLIC_URL)  + "/list/" + selfId}
                 viewBox={`0 0 256 256`}
                 />
         </div>
