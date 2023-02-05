@@ -8,6 +8,7 @@ type ReviewManager = {
 	reviews: ReviewProps[];
 	currentReview?: ReviewProps;
 	deviceId: string;
+	selfId: string;
 	status: 'idle' | 'loading' | 'failed';
 }
 
@@ -15,6 +16,7 @@ const initialState: ReviewManager = {
 	reviews: [],
 	currentReview: undefined,
 	deviceId: "",
+	selfId: "",
 	status: 'loading'
 };
 
@@ -29,6 +31,9 @@ export const ReviewManagerSlice = createSlice({
 			} else {
 				state.currentReview = state.reviews.find((review) => review.id === action.payload);
 			}
+		},
+		setDeviceId: (state, action: PayloadAction<string>) => {
+			state.deviceId = action.payload;
 		}
 	},
 	extraReducers: (builder) => {
@@ -48,12 +53,13 @@ export const ReviewManagerSlice = createSlice({
 			})
 			.addCase(loadDeviceId.fulfilled, (state, action) => {
 				state.deviceId = action.payload;
+				state.selfId = action.payload;
 				localStorage.setItem("deviceId", action.payload);
 			});
 	},
 });
 
-export const { onClickReview } = ReviewManagerSlice.actions;
+export const { onClickReview, setDeviceId } = ReviewManagerSlice.actions;
 export default ReviewManagerSlice.reducer;
 
 export const loadDeviceId = createAsyncThunk(

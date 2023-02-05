@@ -1,11 +1,11 @@
-import React from "react";
+import QRCode from "react-qr-code";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import { ReviewBlock } from "../../ui-kit/Review/Review";
 import "./Home.scss";
 
 export default function Home() {
-    const reviews = useSelector((state: RootState) => state.ReviewManager.reviews);
     return (
         <div id="home">
             <h1>Bienvenue sur GTLA</h1>
@@ -17,6 +17,9 @@ export default function Home() {
             </ReviewBlock>
             <ReviewBlock title={"Comment ajouter un avis ?"}>
                 {AddReview}
+            </ReviewBlock>
+            <ReviewBlock title={"Comment partager ma liste de restaurant ?"}>
+                {ShareList()}
             </ReviewBlock>
         </div>
     );
@@ -45,3 +48,23 @@ const AddReview: JSX.Element[] = [
     <br key={3}/>,
     <span key={4}>Une fois sur la page d'ajout, il suffit de suivre les instructions qui s'affichent.</span>
 ];
+
+const ShareList = (): JSX.Element[]  => {
+
+    const selfId = useSelector((state: RootState) => state.ReviewManager.selfId);
+    if(!selfId) return [];
+    return [
+        <span key={0}>Envoyer le </span>,
+        <Link key={1} className='review__content__bold' to={"/list/" + selfId}>lien</Link>,
+        <span key={2}> de votre liste de restaurant à vos amis. Ou bien, utiliser le QRCode ci-dessous.</span>,
+        <br key={3}/>,
+        <div key={4} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+            <QRCode
+                size={256}
+                style={{ height: "100px", width: "100px", marginTop: "10px", outline: "1px solid var(--color-primary)"}}
+                value={process.env.PUBLIC_URL  + "/list/" + selfId}
+                viewBox={`0 0 256 256`}
+                />
+        </div>
+    ]
+};
