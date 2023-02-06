@@ -1,45 +1,12 @@
 import "./Map.scss";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import { MapsLibraries } from "../add/Form/Location";
-// TO DELETE: dummy array of reviews
-import { ReviewProps } from "../../ui-kit/Review/Review";
-const reviews: ReviewProps[] = [
-  {
-    id: "1",
-    locationName: "ParisResto",
-    latitude: 48.845,
-    longitude: 2.341,
-    address: "Paris",
-    website: "https://www.paris.fr/",
-    rating: 5,
-    type: "Restaurant",
-    visitedDate: 1620000000,
-  },
-  {
-    id: "2",
-    locationName: "ParisResto 2",
-    latitude: 48.848,
-    longitude: 2.337,
-    address: "Paris",
-    website: "https://www.paris.fr/",
-    rating: 5,
-    type: "Restaurant",
-    visitedDate: 1620000000,
-  },
-  {
-    id: "3",
-    locationName: "No coords resto",
-    address: "Paris",
-    website: "https://www.paris.fr/",
-    rating: 5,
-    type: "Restaurant",
-    visitedDate: 1620000000,
-  },
-];
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 ///TODO Duc-Bao
 export default function Map() {
-  // const reviews = useSelector((state: RootState) => state.ReviewManager.reviews);
+  const reviews = useSelector((state: RootState) => state.ReviewManager.reviews);
 
   const containerStyle = {
     width: "100vw",
