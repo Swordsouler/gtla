@@ -4,35 +4,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import Review from "../../ui-kit/Review/Review";
 import "./List.scss";
-import { useLocation } from "react-router";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { setDeviceId } from "../../redux/ReviewManager";
+import { useParams } from "react-router-dom";
 
-const getUserIdInUrl = (url: string): string | undefined => {
-    const split = url.split("/");
-    const userId = split.length > 2 && split[2].toLowerCase() !== "" ? split[2].toLowerCase() : undefined;
-    console.log(userId);
-    return userId;
-}
 
 export default function List() {
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
-    const {pathname} = useLocation();
     const deviceId = useSelector((state: RootState) => state.ReviewManager.deviceId);
     const statusReviews = useSelector((state: RootState) => state.ReviewManager.status);
     const reviews = useSelector((state: RootState) => state.ReviewManager.reviews);
     const theme = useSelector((state: RootState) => state.AppData.theme);
     const currentReview = useSelector((state: RootState) => state.ReviewManager.currentReview);
     const selfId = useSelector((state: RootState) => state.ReviewManager.selfId);
+    const {id} = useParams<{id: string}>();
 
     React.useEffect(() => {
-        const id = getUserIdInUrl(pathname) ?? selfId;
-        if(deviceId === "" || deviceId === id) return;
-        if(id !== undefined && deviceId !== id) {
-            dispatch(setDeviceId(id));
+        let idc = id ?? selfId; 
+        if(deviceId === "" || deviceId === idc) return;
+        if(idc !== undefined && deviceId !== idc) {
+            dispatch(setDeviceId(idc));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [deviceId, pathname]);
+    }, [deviceId, id]);
 
     return (
         <div id="list">
