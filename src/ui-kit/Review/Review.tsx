@@ -165,7 +165,34 @@ const RatingToString = (rating: number) => {
   }
 };
 
+function sleep(seconds: number) {
+  return new Promise((resolve) =>setTimeout(resolve, seconds * 1000));
+}
+
 const ImagesCarousel = (props: ReviewProps) => {
+  
+  const [images, setImages] = React.useState<string[]>([]);
+  
+  React.useEffect(() => {
+    async function loadImages() {
+      const tempImages: string[] = [];
+      props.images?.forEach(async (image) => {
+        if (!image) return;
+        tempImages.push("https://gtla-storage-88691f07145011-prod.s3.eu-west-3.amazonaws.com/public/" + image.key);
+      });
+      
+      const length = props.googleImages ? props.googleImages.length : 0;
+      for (let i = 0; i < length; i++) {
+        if (!(props.googleImages && props.googleImages[i])) continue;
+        const image = props.googleImages[i];
+        if (!image) continue;
+        await sleep(0.1);
+        tempImages.push(image);
+        setImages(tempImages);
+      }
+    }
+    loadImages();
+  }, []);
   if (
     (props.images === null ||
     props.images === undefined ||
@@ -177,33 +204,7 @@ const ImagesCarousel = (props: ReviewProps) => {
     return null;
   return (
     <div id="review__content__carousel">
-      {!(props.images === null ||
-        props.images === undefined ||
-        props.images.length === 0) && props.images.map((image, index) => {
-        if (image === null || image === undefined) return null;
-        return (
-          <img
-            src={
-              "https://gtla-storage-88691f07145011-prod.s3.eu-west-3.amazonaws.com/public/" +
-              image.key
-            }
-            alt={"Restaurant " + index}
-            key={"Restaurant " + index}
-          />
-        );
-      })}
-      {!(props.googleImages === null ||
-        props.googleImages === undefined ||
-        props.googleImages.length === 0) && props.googleImages.map((image, index) => {
-        if (image === null || image === undefined) return null;
-        return (
-          <img
-            src={image}
-            alt={"Restaurant " + index}
-            key={"Restaurant " + index}
-          />
-        );
-      })}
+      {images.map((image, index) => { return <img src={image} alt={"Restaurant " + index} key={"Restaurant " + index} />; })}
     </div>
   );
 };
