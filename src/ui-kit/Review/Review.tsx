@@ -192,14 +192,9 @@ const ImagesCarousel = (props: ReviewProps) => {
       }
     }
     loadImages();
-  }, []);
+  }, [props.googleImages, props.images]);
   if (
-    (props.images === null ||
-    props.images === undefined ||
-    props.images.length === 0) &&
-    (props.googleImages === null ||
-    props.googleImages === undefined ||
-    props.googleImages.length === 0)
+    images.length === 0
   )
     return null;
   return (

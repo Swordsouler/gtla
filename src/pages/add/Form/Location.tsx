@@ -105,6 +105,7 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
           {
             input: props.autocomplete,
             types: ["restaurant"],
+            region: "fr",
           },
           (results, status) => {
             if (status !== window.google.maps.places.PlacesServiceStatus.OK)
