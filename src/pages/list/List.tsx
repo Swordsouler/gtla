@@ -23,15 +23,15 @@ export default function List() {
     const theme = useSelector((state: RootState) => state.AppData.theme);
     const currentReview = useSelector((state: RootState) => state.ReviewManager.currentReview);
     const selfId = useSelector((state: RootState) => state.ReviewManager.selfId);
-    const id = getUserIdInUrl(pathname) ?? selfId;
 
     React.useEffect(() => {
+        const id = getUserIdInUrl(pathname) ?? selfId;
         if(deviceId === "" || deviceId === id) return;
         if(id !== undefined && deviceId !== id) {
             dispatch(setDeviceId(id));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id, deviceId, pathname]);
+    }, [deviceId, pathname]);
 
     return (
         <div id="list">
