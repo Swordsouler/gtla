@@ -10,7 +10,8 @@ import { setDeviceId } from "../../redux/ReviewManager";
 
 const getUserIdInUrl = (url: string): string | undefined => {
     const split = url.split("/");
-    const userId = split.length > 2 ? split[2].toLowerCase() : undefined;
+    const userId = split.length > 2 && split[2].toLowerCase() !== "" ? split[2].toLowerCase() : undefined;
+    console.log(userId);
     return userId;
 }
 
