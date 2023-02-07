@@ -21,12 +21,18 @@ export default function List() {
 
     React.useEffect(() => {
         let idc = id ?? selfId; 
-        if(deviceId === "" || deviceId === idc) return;
+        console.log(deviceId, id, selfId);
+        if(deviceId === "") return;
+        if(idc === undefined) return;
+        if(deviceId !== selfId) return;
+        if(selfId === idc) return;
         if(idc !== undefined && deviceId !== idc) {
             dispatch(setDeviceId(idc));
+        } else {
+            dispatch(setDeviceId(selfId));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [deviceId, id]);
+    }, [deviceId, id, selfId]);
 
     return (
         <div id="list">

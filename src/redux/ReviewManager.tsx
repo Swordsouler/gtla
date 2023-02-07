@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DataStore, SortDirection } from "aws-amplify";
+import { stat } from "fs";
+import { changeSync } from "..";
 import { Review } from "../models";
 import { User } from "../models";
 import { ReviewProps } from "../ui-kit/Review/Review";
@@ -34,38 +36,47 @@ export const ReviewManagerSlice = createSlice({
 		},
 		setDeviceId: (state, action: PayloadAction<string>) => {
 			state.deviceId = action.payload;
+		},
+		setupSelfId: (state) => {
+			state.deviceId = state.selfId;
 		}
 	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(loadReviews.pending, (state) => {
-				if(state.deviceId === "") return;
+				if(state.selfId === "") return;
 				state.status = 'loading';
 			})
 			.addCase(loadReviews.fulfilled, (state, action) => {
-				if(state.deviceId === "") return;
+				if(state.selfId === "") return;
 				state.status = 'idle';
 				state.reviews = JSON.parse(action.payload ?? "[]");
 			})
 			.addCase(loadReviews.rejected, (state) => {
-				if(state.deviceId === "") return;
+				if(state.selfId === "") return;
 				state.status = 'failed';
 			})
 			.addCase(loadDeviceId.fulfilled, (state, action) => {
-				state.deviceId = action.payload;
-				state.selfId = action.payload;
-				localStorage.setItem("deviceId", action.payload);
+				if(state.selfId === "") {
+
+					state.selfId = action.payload;
+					localStorage.setItem("deviceId", action.payload);
+				} else {
+					
+					state.deviceId = action.payload;
+				}
 			});
 	},
 });
 
-export const { onClickReview, setDeviceId } = ReviewManagerSlice.actions;
+export const { onClickReview, setDeviceId, setupSelfId } = ReviewManagerSlice.actions;
 export default ReviewManagerSlice.reducer;
 
 export const loadDeviceId = createAsyncThunk(
 	'review/loadDeviceId',
 	async () => {
 		let deviceId = localStorage.getItem("deviceId");
+		console.log("loadDeviceId");
 		if(!deviceId || deviceId === "") {
 			const user = await DataStore.save(
 				new User({
@@ -81,6 +92,7 @@ export const loadDeviceId = createAsyncThunk(
 export const loadReviews = createAsyncThunk(
 	'review/loadReviews',
 	async (deviceId: string) => {
+		console.log("loadReviews");
 		if(deviceId === "") return;
 		const reviews: ReviewProps[] = [];
 		const query = (await DataStore.query(Review, (r) => r.userID.eq(deviceId), {
