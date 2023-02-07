@@ -20,3 +20,12 @@ header {
 #header__theme-icon:hover, #header__home-icon:hover {
     transform: scale(1.2);
 }
+
+#error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    min-height: calc(100vh - 90px);
+}

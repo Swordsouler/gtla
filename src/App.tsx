@@ -61,7 +61,17 @@ function App() {
                 <Route path="/add" element={<Add/>} />
                 <Route path="/map/:id" element={<Map/>} />
                 <Route path="/list/:id" element={<List/>} />
+                <Route path="/*" element={<Error />} />
             </Routes>
+        </div>
+    );
+}
+
+const Error = () => {
+    return (
+        <div id="error">
+            <h1>Oups !</h1>
+            <h2>La page que vous recherchez semble introuvable.</h2>
         </div>
     );
 }

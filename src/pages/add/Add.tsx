@@ -187,7 +187,7 @@ export default function Add() {
           onClick={(e) => onSubmit(e)}
         />
       </div>
-      <img id="google" src={theme === "light" ? "https://developers.google.com/static/maps/documentation/images/google_on_white.png?hl=fr" : "https://developers.google.com/static/maps/documentation/images/google_on_non_white.png?hl=fr"}/>
+      <img id="google" alt="Google" src={theme === "light" ? "https://developers.google.com/static/maps/documentation/images/google_on_white.png?hl=fr" : "https://developers.google.com/static/maps/documentation/images/google_on_non_white.png?hl=fr"}/>
     </form>
   );
 }
