@@ -10,10 +10,10 @@ export type NavigationButtonProps = {
 
 export default React.memo(({ buttons }: { buttons: NavigationButtonProps[] }) => {
     const { pathname } = useLocation();
-    const currentPage = buttons.findIndex(b => b.link === pathname) + 1;
+    const currentPage = buttons.findIndex(b => pathname.includes(b.link)) + 1;
     return (
         <div id="navigation-buttons" className="no-select">
-            {buttons.map((e, i) => <HeaderButton key={i} {...e} isSelected={pathname === e.link}/>)}
+            {buttons.map((e, i) => <HeaderButton key={i} {...e} isSelected={pathname.includes(e.link)}/>)}
             <div className={'navigation-buttons__animation navigation-buttons__start-' + currentPage}/>
         </div>
     );

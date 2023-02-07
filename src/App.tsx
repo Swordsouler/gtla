@@ -7,14 +7,14 @@ import './App.css';
 import Add from './pages/add/Add';
 import Home from './pages/home/Home';
 import { toggleTheme } from './redux/AppData';
-import { loadDeviceId, loadReviews, setDeviceId, setupSelfId } from './redux/ReviewManager';
+import { loadDeviceId, loadReviews, setIsDatastoreReady } from './redux/ReviewManager';
 import { RootState } from './redux/store';
 import NavigationButtons, { NavigationButtonProps } from './ui-kit/NavigationButtons/NavigationButtons';
 import { HiMoon } from 'react-icons/hi';
 import List from './pages/list/List';
 import Map from './pages/map/Map';
 import { ThunkDispatch } from '@reduxjs/toolkit';
-import { changeSync, deviceId as loadedId } from '.';
+import { deviceId } from '.';
 
 const header: NavigationButtonProps[] = [
     {name: "Liste", link: "/list"},
@@ -26,7 +26,6 @@ function App() {
 	
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const theme = useSelector((state: RootState) => state.AppData.theme);
-    const deviceId = useSelector((state: RootState) => state.ReviewManager.deviceId);
     const selfId = useSelector((state: RootState) => state.ReviewManager.selfId);
 
 	React.useEffect(() => {
@@ -36,6 +35,8 @@ function App() {
 			if (payload.event === 'ready') {
                 console.log('----------------DataStore ready----------------');
                 dispatch(loadDeviceId());
+                dispatch(loadReviews(deviceId));
+                dispatch(setIsDatastoreReady(true));
 			}
 		});
 	
@@ -44,18 +45,7 @@ function App() {
 		return () => removeListener();
         // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-    React.useEffect(() => {
-        console.log("app/loadReviews");
-        const newId = deviceId === "" ? selfId : deviceId;
-        changeSync(newId);
-        dispatch(loadReviews(newId));
-        
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [deviceId, selfId]);
-
-    console.log("selfId : " + selfId);
-    console.log("deviceId : " + deviceId);
+    
     return (
         <div id="app" data-theme={theme}>
             <header className='no-select'>

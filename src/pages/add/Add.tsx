@@ -22,6 +22,7 @@ import {
 } from "./Form/Pictures";
 import { ReviewForm, ReviewOnSubmit, ReviewTitle } from "./Form/Review";
 import { Storage } from "@aws-amplify/storage";
+import { deviceId } from "../..";
 
 type Page = {
   title: string;
@@ -62,9 +63,6 @@ const pages: Page[] = [
 export default function Add() {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const navigate = useNavigate();
-  const deviceId = useSelector(
-    (state: RootState) => state.ReviewManager.deviceId
-  );
   const [currentPage, setCurrentPage] = React.useState<number>(0);
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
 
