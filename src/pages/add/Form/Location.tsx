@@ -87,7 +87,7 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
           restaurant.address = place.formatted_address;
           restaurant.latitude = place.geometry!.location!.lat();
           restaurant.longitude = place.geometry!.location!.lng();
-          restaurant.type = place.types![0];
+          restaurant.type = translateType(place.types![0]);
           restaurant.googleImages =
             place.photos?.map((gi) => gi.getUrl()) || [];
         }
@@ -128,7 +128,7 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
             );
           }
         );
-      }, 1500);
+      }, 1000);
     }
   }, [props.autocomplete]);
 
@@ -160,7 +160,7 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
                 address: e.vicinity,
                 latitude: e.geometry.location.lat(),
                 longitude: e.geometry.location.lng(),
-                type: e.types[0],
+                type: translateType(e.types[0]),
                 googleImages: images,
                 website: undefined,
                 placeId: e.place_id,
@@ -237,4 +237,24 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
       </div>
     </div>
   );
+}
+
+
+const translateType = (type: string) => {
+  switch (type) {
+    case "restaurant":
+      return "restaurant";
+    case "cafe":
+      return "café";
+    case "bar":
+      return "bar";
+    case "meal_takeaway":
+      return "fast-food";
+    case "meal_delivery":
+      return "fast-food";
+    case "grocery_or_supermarket":
+      return "supermarché";
+    default:
+      return type;
+  }
 }

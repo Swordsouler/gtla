@@ -45,7 +45,7 @@ export default function List() {
                 statusReviews === "loading" ? 
                     <div id="list__spinner"><Spinner size={30} color={theme === "light" ? "#524291" : "#9ad45b"} /></div> : 
                     reviews.length > 0 ? 
-                        reviews.map((review) => <Review key={review.id} {...review} isShown={currentReview?.id === review.id} />) : 
+                        reviews.map((review) => <Review key={review.id} review={review} isShown={currentReview?.id === review.id} />) : 
                         <div id="list__no-reviews">Aucun avis n'a été trouvé</div>
                     
                 

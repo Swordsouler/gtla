@@ -26,7 +26,6 @@ function App() {
 	
     const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const theme = useSelector((state: RootState) => state.AppData.theme);
-    const selfId = useSelector((state: RootState) => state.ReviewManager.selfId);
 
 	React.useEffect(() => {
         

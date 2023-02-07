@@ -32,6 +32,9 @@ export const ReviewManagerSlice = createSlice({
 				state.currentReview = state.reviews.find((review) => review.id === action.payload);
 			}
 		},
+		resetCurrentReview: (state) => {
+			state.currentReview = undefined;
+		},
 		setIsDatastoreReady: (state, action: PayloadAction<boolean>) => {
 			state.isDatastoreReady = action.payload;
 		}
@@ -64,7 +67,7 @@ export const ReviewManagerSlice = createSlice({
 	},
 });
 
-export const { onClickReview, setIsDatastoreReady } = ReviewManagerSlice.actions;
+export const { onClickReview, setIsDatastoreReady, resetCurrentReview } = ReviewManagerSlice.actions;
 export default ReviewManagerSlice.reducer;
 
 export const loadDeviceId = createAsyncThunk(
