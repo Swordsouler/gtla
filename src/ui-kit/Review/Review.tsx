@@ -1,5 +1,6 @@
 import moment from "moment";
 import React from "react";
+import { Spinner } from "react-activity";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Rating } from "react-simple-star-rating";
@@ -23,38 +24,46 @@ export type ReviewProps = {
   googleImages?: (string | null)[];
   createdAt?: string;
   updatedAt?: string;
-  isShown?: boolean;
 };
 
-export default React.memo((props: ReviewProps) => {
+export default React.memo(({review, isShown, disabled}: {review: ReviewProps, isShown: boolean, disabled?: boolean}) => {
   const dispatch = useDispatch();
   const onClick = () => {
-    dispatch(onClickReview(props.id));
+    dispatch(onClickReview(review.id));
   };
   const theme = useSelector((state: RootState) => state.AppData.theme);
-  const visitedDate = moment(new Date(props.visitedDate)).format("DD/MM/YYYY");
-  console.log(props);
+  const visitedDate = moment(new Date(review.visitedDate)).format("DD/MM/YYYY");
+  const [imageHidden, setImageHidden] = React.useState<boolean>(true);
+  React.useEffect(() => {
+    if(isShown) {
+      setImageHidden(isShown);
+    } else {
+      setTimeout(() => {
+        setImageHidden(isShown);
+      }, 500);
+    }
+  }, [isShown]);
   return (
-    <div id="review">
-      <div id="review__header" className="no-select" onClick={onClick}>
+    <div id="review" className={disabled ? "review__disabled" : ""}>
+      <div id="review__header" className="no-select" onClick={disabled ? undefined : onClick}>
         <Rating
           readonly
-          initialValue={props.rating ?? 0}
+          initialValue={review.rating ?? 0}
           fillColor={theme === "light" ? "#524291" : "#9ad45b"}
           emptyColor="#888888"
           style={{ height: "22px" }}
           size={20}
         />
-        <span id="review__location-name">{props.locationName}</span>
+        <span id="review__location-name">{review.locationName}</span>
         <span id="review__date">{visitedDate}</span>
       </div>
       <div
-        id={"review__content" + (props.isShown ? "__visible" : "__hidden")}
+        id={"review__content" + (isShown ? "__visible" : "__hidden")}
         className={"review__content"}
       >
-        <Sentences {...props} />
-        <Review {...props} />
-        <ImagesCarousel {...props} />
+        <Sentences {...review} />
+        <Review {...review} />
+        {imageHidden && <ImagesCarousel {...review} />}
       </div>
     </div>
   );
@@ -171,7 +180,9 @@ function sleep(seconds: number) {
 
 const ImagesCarousel = (props: ReviewProps) => {
   
+  const theme = useSelector((state: RootState) => state.AppData.theme);
   const [images, setImages] = React.useState<string[]>([]);
+  const [isLoaded, setIsLoaded] = React.useState<boolean>(false);
   
   React.useEffect(() => {
     async function loadImages() {
@@ -186,21 +197,26 @@ const ImagesCarousel = (props: ReviewProps) => {
         if (!(props.googleImages && props.googleImages[i])) continue;
         const image = props.googleImages[i];
         if (!image) continue;
-        await sleep(0.1);
+        await sleep(0.05);
         tempImages.push(image);
+        console.log("load");
         setImages(tempImages);
       }
     }
     loadImages();
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, (props.googleImages?.length ?? 0) * 50);
   }, [props.googleImages, props.images]);
-  if (
-    images.length === 0
-  )
+  if (images.length === 0 && isLoaded)
     return null;
   return (
-    <div id="review__content__carousel">
-      {images.map((image, index) => { return <img src={image} alt={"Restaurant " + index} key={"Restaurant " + index} />; })}
-    </div>
+    <>
+      <div id={"review__content__carousel"} className={isLoaded ? "" : "review__content__carousel__loading"}>
+        {images.map((image, index) => { return <img src={image} alt={"Restaurant " + index} key={"Restaurant " + index}/>; })}
+      </div>
+      {!isLoaded && <div id="list__spinner" style={{paddingBottom: "10px", paddingTop: "10px" }}><Spinner size={20} color={theme === "light" ? "#524291" : "#9ad45b"} /></div>}
+    </>
   );
 };
 

@@ -46,7 +46,6 @@
 .review__content {
     display: flex;
     flex-direction: column;
-    gap: 3px;
     overflow: hidden;
     transition: all 0.5s;
     gap: 10px;
@@ -87,6 +86,7 @@
     display: flex;
     direction: row;
     padding-left: 10px;
+    height: 200px;
     img {
         height: 200px;
         object-fit: cover;
@@ -98,5 +98,32 @@
     -ms-overflow-style: none;
     &::-webkit-scrollbar {
         display: none;
+    }
+}
+
+.review__content__carousel__loading {
+    height: 0 !important;
+}
+
+.review__disabled {
+    box-shadow: none !important;
+    #review__header {
+        cursor: default !important;
+        padding: 0;
+        padding-bottom: 5px;
+    }
+    #review__header:hover, #review__header {
+        filter: brightness(100%) !important;
+    }
+    #review__content__sentence {
+        padding: 0;
+    }
+    #review__content__carousel {
+        padding: 0;
+        width: calc(100%);
+    }
+    .review__content {
+        padding: 0 !important;
+        gap: 5px !important;
     }
 }

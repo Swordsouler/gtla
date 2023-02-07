@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { Review, S3Data } from "../../models";
 import { getFileExtension, loadReviews } from "../../redux/ReviewManager";
-import { RootState } from "../../redux/store";
 import { ReviewProps } from "../../ui-kit/Review/Review";
 import "./Add.scss";
 import {
@@ -22,7 +21,7 @@ import {
 } from "./Form/Pictures";
 import { ReviewForm, ReviewOnSubmit, ReviewTitle } from "./Form/Review";
 import { Storage } from "@aws-amplify/storage";
-import { deviceId } from "../..";
+import { RootState } from "../../redux/store";
 
 type Page = {
   title: string;
@@ -65,6 +64,7 @@ export default function Add() {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = React.useState<number>(0);
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
+  const selfId = useSelector((state: RootState) => state.ReviewManager.selfId);
 
   const onBack = () => {
     if (currentPage > 0) setCurrentPage(currentPage - 1);
@@ -108,14 +108,14 @@ export default function Add() {
           visitedDate: review.visitedDate,
           images: [],
           googleImages: review.googleImages ?? [],
-          userID: deviceId,
+          userID: selfId,
         })
       );
       const images: S3Data[] = [];
       for (let i = 0; i < pictures.length; i++) {
         const picture = pictures[i];
         await Storage.put(
-          deviceId +
+            selfId +
             "/" +
             newReview.id +
             "-" +
@@ -130,7 +130,7 @@ export default function Add() {
         images.push(
           new S3Data({
             key:
-              deviceId +
+              selfId +
               "/" +
               newReview.id +
               "-" +
@@ -151,7 +151,7 @@ export default function Add() {
           })
         );
       }
-      dispatch(loadReviews(deviceId));
+      dispatch(loadReviews(selfId));
       navigate("/list");
       setIsSubmitting(false);
     }

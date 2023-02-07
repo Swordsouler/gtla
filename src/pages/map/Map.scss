@@ -1,5 +1,76 @@
 #map {
-    background-color: red;
     height: calc(100vh - 50px);
     width: 100vw;
+    button[aria-checked="false"] {
+        color: gray !important;
+    }
+    button:hover {
+        filter: brightness(120%);
+        img {
+            filter: brightness(200%);
+        }
+    }
+    .gm-style-iw-d .title, .gm-style-iw-d .address-line, button {
+        background-color: var(--color-background) !important;
+        color: var(--color-text) !important;
+        transition: all 0.2s !important;
+    }
+    .view-link a, .view-link a span {
+        background-color: var(--color-background) !important;
+        color: var(--color-primary) !important;
+        transition: all 0.2s !important;
+    }
+    .gm-svpc, ul, ul li {
+        background-color: var(--color-background) !important;
+        transition: all 0.2s !important;
+    }
+    ul li span span {
+        background-color: var(--color-text) !important;
+        transition: all 0.2s !important;
+    }
+
+    .gmnoprint {
+        div {
+            background-color: var(--color-background) !important;
+            transition: all 0.2s !important;
+        }
+    }
+    .gm-style-cc {
+        background-color: var(--color-background) !important;
+        transition: all 0.2s !important;
+        div {
+            background-color: var(--color-background) !important;
+            transition: all 0.2s !important;
+        }
+    }
+    .gm-style-cc a {
+        color: var(--color-text) !important;
+        background-color: var(--color-background) !important;
+        transition: all 0.2s !important;
+    }
+    .gm-style .gm-style-iw-d::-webkit-scrollbar-track, 
+    .gm-style .gm-style-iw-d::-webkit-scrollbar-track-piece,
+    .gm-style .gm-style-iw-c,
+    .gm-style .gm-style-iw-t::after,
+    .gm-style .gm-style-iw-tc::after,
+    .gm-style .gm-style-iw-d div { 
+        background-color: var(--color-background) !important;
+        transition: all 0.2s !important;
+    }
+    .gm-style .gm-style-iw-tc {
+        -webkit-filter: drop-shadow(0 4px 2px var(--color-primary));
+        filter: drop-shadow(0 4px 2px var(--color-primary));
+        transition: all 0.2s !important;
+    }
+    .gm-ui-hover-effect {
+        background-color: transparent !important;
+        transition: all 0.2s !important;
+    }
+    .gm-ui-hover-effect:hover {
+        filter: brightness(100%);
+    }
+    .gm-ui-hover-effect span {
+        background: var(--color-text) !important;
+        transition: all 0.2s !important;
+    }
 }
