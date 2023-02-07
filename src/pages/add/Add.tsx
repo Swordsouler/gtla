@@ -33,7 +33,8 @@ type Page = {
 export const review: ReviewProps = {
   id: "",
   locationName: "",
-  visitedDate: 0
+  visitedDate: 0,
+  rating: 3,
 };
 
 const pages: Page[] = [
@@ -79,7 +80,7 @@ export default function Add() {
       review.address = undefined;
       review.website = undefined;
       review.review = undefined;
-      review.rating = undefined;
+      review.rating = 3;
       review.longitude = undefined;
       review.latitude = undefined;
       review.googleImages = undefined;

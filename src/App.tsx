@@ -59,6 +59,7 @@ function App() {
                 <Route path="/list" element={<List/>} />
                 <Route path="/map" element={<Map/>} />
                 <Route path="/add" element={<Add/>} />
+                <Route path="/map/:id" element={<Map/>} />
                 <Route path="/list/:id" element={<List/>} />
             </Routes>
         </div>

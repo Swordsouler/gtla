@@ -33,13 +33,13 @@ export default React.memo(({review, isShown, disabled}: {review: ReviewProps, is
   };
   const theme = useSelector((state: RootState) => state.AppData.theme);
   const visitedDate = moment(new Date(review.visitedDate)).format("DD/MM/YYYY");
-  const [imageHidden, setImageHidden] = React.useState<boolean>(true);
+  const [imageShown, setImageShown] = React.useState<boolean>(false);
   React.useEffect(() => {
     if(isShown) {
-      setImageHidden(isShown);
+      setImageShown(isShown);
     } else {
       setTimeout(() => {
-        setImageHidden(isShown);
+        setImageShown(isShown);
       }, 500);
     }
   }, [isShown]);
@@ -63,7 +63,7 @@ export default React.memo(({review, isShown, disabled}: {review: ReviewProps, is
       >
         <Sentences {...review} />
         <Review {...review} />
-        {imageHidden && <ImagesCarousel {...review} />}
+        {imageShown && <ImagesCarousel {...review} />}
       </div>
     </div>
   );

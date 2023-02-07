@@ -41,6 +41,7 @@
         padding: 0px 10px;
         font-size: 16px;
         resize: vertical;
+        width: calc(100% - 22px);
     }
     input[type="datetime-local"] {
         resize: none;
