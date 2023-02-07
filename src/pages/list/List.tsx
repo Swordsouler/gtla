@@ -47,8 +47,6 @@ export default function List() {
                     reviews.length > 0 ? 
                         reviews.map((review) => <Review key={review.id} review={review} isShown={currentReview?.id === review.id} />) : 
                         <div id="list__no-reviews">Aucun avis n'a été trouvé</div>
-                    
-                
             }
         </div>
     );
