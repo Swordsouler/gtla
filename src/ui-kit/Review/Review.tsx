@@ -124,6 +124,8 @@ const Sentences = (props: ReviewProps) => {
       <a
         key={sentences.length}
         href={props.website ?? ""}
+        target={"_blank"}
+        rel={"noopener noreferrer"}
         className="review__content__bold"
       >
         {props.website}
