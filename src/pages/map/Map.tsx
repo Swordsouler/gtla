@@ -82,7 +82,7 @@ export default function Map() {
               key={review.id}
               position={{ lat: review.latitude, lng: review.longitude }}
               icon={{
-                url: "http://maps.google.com/mapfiles/ms/micons/" + (theme === "dark" ? "green" : "blue") + "-dot.png",
+                url: "https://maps.google.com/mapfiles/ms/micons/" + (theme === "dark" ? "green" : "blue") + "-dot.png",
                 size: new google.maps.Size(32, 32),
                 labelOrigin: new google.maps.Point(16, -16),
               }}
