@@ -67,7 +67,7 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
       {
         placeId: restaurant.placeId,
         fields: restaurant.address
-          ? ["website"]
+          ? ["website", "photo"]
           : [
               "website",
               "formatted_address",
