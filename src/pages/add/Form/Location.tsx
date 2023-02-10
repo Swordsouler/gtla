@@ -82,14 +82,13 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
         if (!place) return;
         console.log(place);
         restaurant.website = place.website;
+        restaurant.googleImages = place.photos?.map((gi) => gi.getUrl()) || [];
         if (place.formatted_address) {
           restaurant.name = place.name!;
           restaurant.address = place.formatted_address;
           restaurant.latitude = place.geometry!.location!.lat();
           restaurant.longitude = place.geometry!.location!.lng();
           restaurant.type = translateType(place.types![0]);
-          restaurant.googleImages =
-            place.photos?.map((gi) => gi.getUrl()) || [];
         }
         nextStep(restaurant);
       }
