@@ -277,6 +277,8 @@ const ImagesCarousel = (props: ReviewProps) => {
       }*/
     }
     loadImages();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.images, props.placeID, isLoaded, map.current]);
   if (!isLoaded) return <p>Chargement des images...</p>;
   console.log(images);
