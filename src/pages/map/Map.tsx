@@ -6,9 +6,11 @@ import { RootState } from "../../redux/store";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import React from "react";
 import { useParams } from "react-router";
-import { changeSync } from "../..";
+import { changeSync, deviceId } from "../..";
 import { onClickReview, resetCurrentReview, setIsDatastoreReady } from "../../redux/ReviewManager";
 import Review from "../../ui-kit/Review/Review";
+import { ActionType } from "../../models";
+import { performAction } from "../../analytics/analytics";
 
 ///TODO Duc-Bao
 export default function Map() {
@@ -50,6 +52,19 @@ export default function Map() {
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, selfId, isDatastoreReady]);
+
+  React.useEffect(() => {
+      if(deviceId === "") return;
+      if(!isDatastoreReady) return;
+      let idc = id ?? selfId;
+      if(idc === selfId) {
+          performAction(ActionType.LOAD_LOCAL_MAP, idc);
+      } else {
+          performAction(ActionType.LOAD_SHARED_MAP, idc);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deviceId, isDatastoreReady]);
+  
 
   const containerStyle = {
     width: "100vw",
@@ -102,7 +117,7 @@ export default function Map() {
               
               {currentReview && currentReview.id === review.id ? (
                 <InfoWindow onCloseClick={() => dispatch(onClickReview(currentReview.id))}>
-                  <Review key={review.id} review={review} isShown={currentReview?.id === review.id} disabled />
+                  <Review key={review.id} review={review} isShown={currentReview?.id === review.id} disabled context="MAP" />
                 </InfoWindow>
                 ) : null}
             </Marker>

@@ -4,6 +4,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { review } from "../Add";
 import { useJsApiLoader, GoogleMap } from "@react-google-maps/api";
+import { performAction } from "../../../analytics/analytics";
+import { ActionType } from "../../../models";
+import { deviceId } from "../../..";
 
 export const LocationTitle = "Où êtes-vous ?";
 export const MapsLibraries: any = ["places"];
@@ -111,6 +114,7 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
               return;
             if (!results) return;
             console.log(results);
+            performAction(ActionType.SEARCH_AUTOCOMPLETE, deviceId);
             setSuggestions(
               results.map((e: any) => {
                 return {
@@ -151,6 +155,7 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
             return;
           if (!results) return;
           console.log(results);
+          performAction(ActionType.SEARCH_NEARBY, deviceId);
           setSuggestions(
             results.map((e: any) => {
               let images = e.photos?.map((gi: any) => gi.getUrl()) || [];

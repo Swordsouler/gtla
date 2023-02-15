@@ -4,7 +4,8 @@ import { Spinner } from "react-activity";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Rating } from "react-simple-star-rating";
-import { LazyS3Data } from "../../models";
+import { performAction } from "../../analytics/analytics";
+import { ActionType, LazyS3Data } from "../../models";
 import { onClickReview } from "../../redux/ReviewManager";
 import { RootState } from "../../redux/store";
 import "./Review.scss";
@@ -26,10 +27,17 @@ export type ReviewProps = {
   updatedAt?: string;
 };
 
-export default React.memo(({review, isShown, disabled}: {review: ReviewProps, isShown: boolean, disabled?: boolean}) => {
+export default React.memo(({review, isShown, disabled, context}: {review: ReviewProps, isShown: boolean, disabled?: boolean, context: "LIST" | "MAP"}) => {
   const dispatch = useDispatch();
+  const selfId = useSelector((state: RootState) => state.ReviewManager.selfId);
   const onClick = () => {
     dispatch(onClickReview(review.id));
+    if(isShown) return;
+    if(context === "MAP") {
+      performAction(ActionType.REVIEW_DETAIL_MAP, selfId, review.id);
+    } else if(context === "LIST") {
+      performAction(ActionType.REVIEW_DETAIL_LIST, selfId, review.id);
+    }
   };
   const theme = useSelector((state: RootState) => state.AppData.theme);
   const visitedDate = moment(new Date(review.visitedDate)).format("DD/MM/YYYY");

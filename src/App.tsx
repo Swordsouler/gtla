@@ -15,11 +15,12 @@ import List from './pages/list/List';
 import Map from './pages/map/Map';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { deviceId } from '.';
+import { ActionType } from './models';
 
 const header: NavigationButtonProps[] = [
-    {name: "Liste", link: "/list"},
-    {name: "Carte", link: "/map"},
-    {name: "Ajout", link: "/add"},
+    {name: "Liste", link: "/list", actionType: ActionType.ACCESS_LIST},
+    {name: "Carte", link: "/map", actionType: ActionType.ACCESS_MAP},
+    {name: "Ajout", link: "/add", actionType: ActionType.ACCESS_ADD},
 ];
 
 function App() {
