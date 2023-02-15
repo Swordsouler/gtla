@@ -16,7 +16,7 @@ type Action @model @auth(rules: [{allow: public, operations: [create, read]}]) {
   id: ID!
   userID: ID! @index(name: "byUser")
   type: ActionType
-  reviewID: ID! @index(name: "byReview")
+  reviewID: ID @index(name: "byReview")
 }
 
 type User @model @auth(rules: [{allow: public}]) {

@@ -48,7 +48,7 @@ type EagerAction = {
   readonly id: string;
   readonly userID: string;
   readonly type?: ActionType | keyof typeof ActionType | null;
-  readonly reviewID: string;
+  readonly reviewID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -61,7 +61,7 @@ type LazyAction = {
   readonly id: string;
   readonly userID: string;
   readonly type?: ActionType | keyof typeof ActionType | null;
-  readonly reviewID: string;
+  readonly reviewID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

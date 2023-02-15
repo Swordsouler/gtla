@@ -7,8 +7,9 @@ import { Rating } from "react-simple-star-rating";
 import { LazyS3Data } from "../../models";
 import { onClickReview } from "../../redux/ReviewManager";
 import { RootState } from "../../redux/store";
+import { useJsApiLoader, GoogleMap } from "@react-google-maps/api";
+import { MapsLibraries } from "../../pages/add/Form/Location";
 import "./Review.scss";
-
 export type ReviewProps = {
   id: string;
   locationName: string;
@@ -26,48 +27,66 @@ export type ReviewProps = {
   updatedAt?: string;
 };
 
-export default React.memo(({review, isShown, disabled}: {review: ReviewProps, isShown: boolean, disabled?: boolean}) => {
-  const dispatch = useDispatch();
-  const onClick = () => {
-    dispatch(onClickReview(review.id));
-  };
-  const theme = useSelector((state: RootState) => state.AppData.theme);
-  const visitedDate = moment(new Date(review.visitedDate)).format("DD/MM/YYYY");
-  const [imageShown, setImageShown] = React.useState<boolean>(false);
-  React.useEffect(() => {
-    if(isShown) {
-      setImageShown(isShown);
-    } else {
-      setTimeout(() => {
+export default React.memo(
+  ({
+    review,
+    isShown,
+    disabled,
+  }: {
+    review: ReviewProps;
+    isShown: boolean;
+    disabled?: boolean;
+  }) => {
+    const dispatch = useDispatch();
+
+    const onClick = () => {
+      dispatch(onClickReview(review.id));
+    };
+    const theme = useSelector((state: RootState) => state.AppData.theme);
+    const visitedDate = moment(new Date(review.visitedDate)).format(
+      "DD/MM/YYYY"
+    );
+    const [imageShown, setImageShown] = React.useState<boolean>(false);
+    React.useEffect(() => {
+      if (isShown) {
         setImageShown(isShown);
-      }, 500);
-    }
-  }, [isShown]);
-  return (
-    <div id="review" className={disabled ? "review__disabled" : ""}>
-      <div id="review__header" className="no-select" onClick={disabled ? undefined : onClick}>
-        <Rating
-          readonly
-          initialValue={review.rating ?? 0}
-          fillColor={theme === "light" ? "#524291" : "#9ad45b"}
-          emptyColor="#888888"
-          style={{ height: "22px" }}
-          size={20}
-        />
-        <span id="review__location-name">{review.locationName}</span>
-        <span id="review__date">{visitedDate}</span>
+      } else {
+        setTimeout(() => {
+          setImageShown(isShown);
+        }, 500);
+      }
+    }, [isShown]);
+
+    return (
+      <div id="review" className={disabled ? "review__disabled" : ""}>
+        <div
+          id="review__header"
+          className="no-select"
+          onClick={disabled ? undefined : onClick}
+        >
+          <Rating
+            readonly
+            initialValue={review.rating ?? 0}
+            fillColor={theme === "light" ? "#524291" : "#9ad45b"}
+            emptyColor="#888888"
+            style={{ height: "22px" }}
+            size={20}
+          />
+          <span id="review__location-name">{review.locationName}</span>
+          <span id="review__date">{visitedDate}</span>
+        </div>
+        <div
+          id={"review__content" + (isShown ? "__visible" : "__hidden")}
+          className={"review__content"}
+        >
+          <Sentences {...review} />
+          <Review {...review} />
+          {imageShown && <ImagesCarousel {...review} />}
+        </div>
       </div>
-      <div
-        id={"review__content" + (isShown ? "__visible" : "__hidden")}
-        className={"review__content"}
-      >
-        <Sentences {...review} />
-        <Review {...review} />
-        {imageShown && <ImagesCarousel {...review} />}
-      </div>
-    </div>
-  );
-});
+    );
+  }
+);
 
 const Sentences = (props: ReviewProps) => {
   const visitedDate = moment(new Date(props.visitedDate)).format(
@@ -176,25 +195,65 @@ const RatingToString = (rating: number) => {
   }
 };
 
-function sleep(seconds: number) {
-  return new Promise((resolve) =>setTimeout(resolve, seconds * 1000));
-}
+/* function sleep(seconds: number) {
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+} */
 
 const ImagesCarousel = (props: ReviewProps) => {
-  
   const theme = useSelector((state: RootState) => state.AppData.theme);
   const [images, setImages] = React.useState<string[]>([]);
-  const [isLoaded, setIsLoaded] = React.useState<boolean>(false);
-  
+  const [isImageLoaded, setIsLoaded] = React.useState<boolean>(false);
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_MAPS_KEY ?? "",
+    libraries: MapsLibraries,
+  });
+  const map = React.useRef<google.maps.Map>();
+  const mapLoad = React.useCallback(
+    (maps: google.maps.Map) => {
+      if (!isLoaded) return;
+      map.current = maps;
+    },
+    [isLoaded]
+  );
+
   React.useEffect(() => {
     async function loadImages() {
       const tempImages: string[] = [];
       props.images?.forEach(async (image) => {
         if (!image) return;
-        tempImages.push("https://gtla-storage-88691f07145011-prod.s3.eu-west-3.amazonaws.com/public/" + image.key);
+        tempImages.push(
+          "https://gtla-storage-88691f07145011-prod.s3.eu-west-3.amazonaws.com/public/" +
+            image.key
+        );
       });
       setImages(tempImages);
-      
+      if (!props.placeID) {
+        setIsLoaded(true);
+        return;
+      }
+      if (!isLoaded) return;
+      if (!map.current) return;
+      let googleService = new window.google.maps.places.PlacesService(
+        map.current!
+      );
+      googleService.getDetails(
+        { placeId: props.placeID!, fields: ["photo"] },
+        (place, status) => {
+          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+            place?.photos
+              ?.filter((photo, i) => i < 3)
+              .forEach(async (photo) => {
+                if (!photo) return;
+                tempImages.push(
+                  photo.getUrl({ maxWidth: 400, maxHeight: 400 })
+                );
+                console.log(photo.getUrl({ maxWidth: 400, maxHeight: 400 }));
+              });
+            setImages(tempImages);
+            setIsLoaded(true);
+          }
+        }
+      );
       /*const length = props.googleImages ? props.googleImages.length : 0;
       for (let i = 0; i < length; i++) {
         if (!(props.googleImages && props.googleImages[i])) continue;
@@ -207,19 +266,40 @@ const ImagesCarousel = (props: ReviewProps) => {
       }*/
     }
     loadImages();
-    setIsLoaded(true);
-    /*setTimeout(() => {
-      setIsLoaded(true);
-    }, (props.googleImages?.length ?? 0) * 50);*/
-  }, [/*props.googleImages, */props.images]);
-  if (images.length === 0 && isLoaded)
-    return null;
+  }, [props.images, props.placeID, isLoaded, map.current]);
+  if (!isLoaded) return <p>Chargement des images...</p>;
+  console.log(images);
+  //if () return null;
   return (
     <>
-      <div id={"review__content__carousel"} className={isLoaded ? "" : "review__content__carousel__loading"}>
-        {images.map((image, index) => { return <img src={image} alt={"Restaurant " + index} key={"Restaurant " + index}/>; })}
-      </div>
-      {!isLoaded && <div id="list__spinner" style={{paddingBottom: "10px", paddingTop: "10px" }}><Spinner size={20} color={theme === "light" ? "#524291" : "#9ad45b"} /></div>}
+      {images.length !== 0 && isImageLoaded && (
+        <div
+          id={"review__content__carousel"}
+          className={isImageLoaded ? "" : "review__content__carousel__loading"}
+        >
+          {images.map((image, index) => {
+            return (
+              <img
+                src={image}
+                alt={"Restaurant " + index}
+                key={"Restaurant " + index}
+              />
+            );
+          })}
+        </div>
+      )}
+      {!isImageLoaded && (
+        <div
+          id="list__spinner"
+          style={{ paddingBottom: "10px", paddingTop: "10px" }}
+        >
+          <GoogleMap onLoad={mapLoad}></GoogleMap>
+          <Spinner
+            size={20}
+            color={theme === "light" ? "#524291" : "#9ad45b"}
+          />
+        </div>
+      )}
     </>
   );
 };

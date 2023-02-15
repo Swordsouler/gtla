@@ -67,22 +67,14 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
       {
         placeId: restaurant.placeId,
         fields: restaurant.address
-          ? ["website", "photo"]
-          : [
-              "website",
-              "formatted_address",
-              "geometry",
-              "photo",
-              "type",
-              "name",
-            ],
+          ? ["website"]
+          : ["website", "formatted_address", "geometry", "type", "name"],
       },
       (place, status) => {
         if (status !== window.google.maps.places.PlacesServiceStatus.OK) return;
         if (!place) return;
         console.log(place);
         restaurant.website = place.website;
-        restaurant.googleImages = place.photos?.map((gi) => gi.getUrl()) || [];
         if (place.formatted_address) {
           restaurant.name = place.name!;
           restaurant.address = place.formatted_address;
@@ -238,7 +230,6 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
   );
 }
 
-
 const translateType = (type: string) => {
   switch (type) {
     case "restaurant":
@@ -256,4 +247,4 @@ const translateType = (type: string) => {
     default:
       return type;
   }
-}
+};

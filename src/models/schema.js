@@ -30,7 +30,7 @@ export const schema = {
                     "name": "reviewID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -404,5 +404,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.4",
-    "version": "7a5853c3642042f6d1dca2247272c51b"
+    "version": "3f7ce9587e9444760fc867d5781312ca"
 };
