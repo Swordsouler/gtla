@@ -177,7 +177,7 @@ function LocationSuggestions(props: { autocomplete: string }): JSX.Element {
     review.address = restaurant.address;
     review.type = restaurant.type;
     review.website = restaurant.website;
-    review.googleImages = restaurant.googleImages;
+    review.placeID = restaurant.placeId;
 
     //submit le formulaire
     //@ts-ignore

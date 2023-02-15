@@ -1,6 +1,28 @@
+enum ActionType {
+  REVIEW_DETAIL_LIST
+  REVIEW_DETAIL_MAP
+  ACCESS_LIST
+  ACCESS_MAP
+  ACCESS_ADD
+  SEARCH_NEARBY
+  SEARCH_AUTOCOMPLETE
+  LOAD_SHARED_LIST
+  LOAD_SHARED_MAP
+  LOAD_LOCAL_LIST
+  LOAD_LOCAL_MAP
+}
+
+type Action @model @auth(rules: [{allow: public, operations: [create, read]}]) {
+  id: ID!
+  userID: ID! @index(name: "byUser")
+  type: ActionType
+  reviewID: ID! @index(name: "byReview")
+}
+
 type User @model @auth(rules: [{allow: public}]) {
   id: ID!
-  Reviews: [Review] @hasMany(indexName: "byUser", fields: ["id"])
+  Reviews: [Action] @hasMany(indexName: "byUser", fields: ["id"])
+  Actions: [Action] @hasMany(indexName: "byUser", fields: ["id"])
 }
 
 enum S3ProtectionLevel {
@@ -28,7 +50,8 @@ type Review @model @auth(rules: [{allow: public}]) {
   review: String
   visitedDate: AWSTimestamp!
   images: [S3Data]!
-  googleImages: [String]!
   userID: ID! @index(name: "byUser")
+  Actions: [Action] @hasMany(indexName: "byReview", fields: ["id"])
+  placeID: String
 }
  

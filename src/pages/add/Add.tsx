@@ -84,7 +84,7 @@ export default function Add() {
       review.rating = 3;
       review.longitude = undefined;
       review.latitude = undefined;
-      review.googleImages = undefined;
+      review.placeID = undefined;
       review.images = undefined;
       pictures.length = 0;
     };
@@ -109,7 +109,7 @@ export default function Add() {
           rating: review.rating,
           visitedDate: review.visitedDate,
           images: [],
-          googleImages: review.googleImages ?? [],
+          placeID: review.placeID,
           userID: selfId,
         })
       );

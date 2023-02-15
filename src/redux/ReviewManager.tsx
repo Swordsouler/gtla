@@ -108,7 +108,7 @@ export const loadReviews = createAsyncThunk(
 				rating: review.rating ?? undefined,
 				review: review.review ?? undefined,
 				images: review.images ?? undefined,
-				googleImages: review.googleImages ?? undefined,
+				placeID: review.placeID ?? undefined,
 			});
 		});
 		return JSON.stringify(reviews);

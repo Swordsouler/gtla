@@ -1,5 +1,96 @@
 export const schema = {
     "models": {
+        "Action": {
+            "name": "Action",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "userID": {
+                    "name": "userID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": {
+                        "enum": "ActionType"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "reviewID": {
+                    "name": "reviewID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Actions",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUser",
+                        "fields": [
+                            "userID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byReview",
+                        "fields": [
+                            "reviewID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "User": {
             "name": "User",
             "fields": {
@@ -14,7 +105,23 @@ export const schema = {
                     "name": "Reviews",
                     "isArray": true,
                     "type": {
-                        "model": "Review"
+                        "model": "Action"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "userID"
+                        ]
+                    }
+                },
+                "Actions": {
+                    "name": "Actions",
+                    "isArray": true,
+                    "type": {
+                        "model": "Action"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -151,19 +258,34 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": false
                 },
-                "googleImages": {
-                    "name": "googleImages",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": false
-                },
                 "userID": {
                     "name": "userID",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "Actions": {
+                    "name": "Actions",
+                    "isArray": true,
+                    "type": {
+                        "model": "Action"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "reviewID"
+                        ]
+                    }
+                },
+                "placeID": {
+                    "name": "placeID",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -219,6 +341,22 @@ export const schema = {
         }
     },
     "enums": {
+        "ActionType": {
+            "name": "ActionType",
+            "values": [
+                "REVIEW_DETAIL_LIST",
+                "REVIEW_DETAIL_MAP",
+                "ACCESS_LIST",
+                "ACCESS_MAP",
+                "ACCESS_ADD",
+                "SEARCH_NEARBY",
+                "SEARCH_AUTOCOMPLETE",
+                "LOAD_SHARED_LIST",
+                "LOAD_SHARED_MAP",
+                "LOAD_LOCAL_LIST",
+                "LOAD_LOCAL_MAP"
+            ]
+        },
         "S3ProtectionLevel": {
             "name": "S3ProtectionLevel",
             "values": [
@@ -266,5 +404,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.4",
-    "version": "18747e8abda84d6a8e90bf191933a2cd"
+    "version": "7a5853c3642042f6d1dca2247272c51b"
 };

@@ -21,7 +21,7 @@ export type ReviewProps = {
   review?: string;
   visitedDate: number;
   images?: (LazyS3Data | null)[];
-  googleImages?: (string | null)[];
+  placeID?: string;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -193,8 +193,9 @@ const ImagesCarousel = (props: ReviewProps) => {
         if (!image) return;
         tempImages.push("https://gtla-storage-88691f07145011-prod.s3.eu-west-3.amazonaws.com/public/" + image.key);
       });
+      setImages(tempImages);
       
-      const length = props.googleImages ? props.googleImages.length : 0;
+      /*const length = props.googleImages ? props.googleImages.length : 0;
       for (let i = 0; i < length; i++) {
         if (!(props.googleImages && props.googleImages[i])) continue;
         const image = props.googleImages[i];
@@ -203,13 +204,14 @@ const ImagesCarousel = (props: ReviewProps) => {
         tempImages.push(image);
         console.log("load");
         setImages(tempImages);
-      }
+      }*/
     }
     loadImages();
-    setTimeout(() => {
+    setIsLoaded(true);
+    /*setTimeout(() => {
       setIsLoaded(true);
-    }, (props.googleImages?.length ?? 0) * 50);
-  }, [props.googleImages, props.images]);
+    }, (props.googleImages?.length ?? 0) * 50);*/
+  }, [/*props.googleImages, */props.images]);
   if (images.length === 0 && isLoaded)
     return null;
   return (
