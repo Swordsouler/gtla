@@ -6,8 +6,10 @@ import Review from "../../ui-kit/Review/Review";
 import "./List.scss";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { useParams } from "react-router-dom";
-import { changeSync } from "../..";
+import { changeSync, deviceId } from "../..";
 import { setIsDatastoreReady } from "../../redux/ReviewManager";
+import { ActionType } from "../../models";
+import { performAction } from "../../analytics/analytics";
 
 
 export default function List() {
@@ -39,13 +41,25 @@ export default function List() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, selfId, isDatastoreReady]);
 
+    React.useEffect(() => {
+        if(deviceId === "") return;
+        if(!isDatastoreReady) return;
+        let idc = id ?? selfId;
+        if(idc === selfId) {
+            performAction(ActionType.LOAD_LOCAL_LIST, idc);
+        } else {
+            performAction(ActionType.LOAD_SHARED_LIST, idc);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [deviceId, isDatastoreReady]);
+
     return (
         <div id="list">
             {
                 statusReviews === "loading" ? 
                     <div id="list__spinner"><Spinner size={30} color={theme === "light" ? "#524291" : "#9ad45b"} /></div> : 
                     reviews.length > 0 ? 
-                        reviews.map((review) => <Review key={review.id} review={review} isShown={currentReview?.id === review.id} />) : 
+                        reviews.map((review) => <Review key={review.id} review={review} isShown={currentReview?.id === review.id} context="LIST" />) : 
                         <div id="list__no-reviews">Aucun avis n'a été trouvé</div>
             }
         </div>
